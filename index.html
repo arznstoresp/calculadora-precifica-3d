@@ -959,14 +959,14 @@ footer {
     <div class="grid-2">
       <div class="panel">
         <div class="panel-title">▣ Custo Fixo Mensal</div>
-        <div class="field-group"><label>Parcelamento da Máquina (R$)</label><input type="number" id="maquina" value="368.52" step="0.01" min="0"></div>
+        <div class="field-group"><label>Parcelamento da Máquina (R$)</label><input type="number" id="maquina" value="0" step="0.01" min="0"></div>
         <div class="field-group"><label>Assinaturas de Software (R$)</label><input type="number" id="software" value="0" step="0.01" min="0"></div>
         <div class="field-group"><label>Plataformas E-commerce (R$)</label><input type="number" id="ecommerce" value="0" step="0.01" min="0"></div>
         <div class="field-group"><label>Taxa MEI (R$)</label><input type="number" id="mei" value="0" step="0.01" min="0"></div>
         <div class="field-group"><label>Publicidade Mínima (R$)</label><input type="number" id="publicidade" value="0" step="0.01" min="0"></div>
         <div class="field-group"><label>Outros Fixos (R$)</label><input type="number" id="outrosfixo" value="0" step="0.01" min="0"></div>
         <hr class="divider">
-        <div class="field-group"><label>Faturamento Previsto / Mês (R$)</label><input type="number" id="faturamento" value="1000" step="10" min="1"></div>
+        <div class="field-group"><label>Faturamento Previsto / Mês (R$)</label><input type="number" id="faturamento" value="0" step="10" min="1"></div>
         <div class="result-card">
           <div class="result-label">Total Fixo + Amortização</div>
           <div class="result-value v-amber" id="c-custoFixo">—</div>
@@ -979,23 +979,23 @@ footer {
       <div>
         <div class="panel">
           <div class="panel-title">◆ Amortização de Equipamentos</div>
-          <div class="field-group"><label>Equipamento 1 — Valor (R$)</label><input type="number" id="equip1" value="4422.18" step="100" min="0"></div>
+          <div class="field-group"><label>Equipamento 1 — Valor (R$)</label><input type="number" id="equip1" value="0" step="100" min="0"></div>
           <div class="field-group"><label>Equipamento 2 — Valor (R$)</label><input type="number" id="equip2" value="0" step="100" min="0"></div>
-          <div class="field-group"><label>Vida Útil (meses)</label><input type="number" id="vidaUtil" value="36" step="1" min="1"></div>
+          <div class="field-group"><label>Vida Útil (meses)</label><input type="number" id="vidaUtil" value="0" step="1" min="1"></div>
           <div class="result-card"><div class="result-label">Amortização / mês</div><div class="result-value v-sky" id="c-amort">—</div></div>
         </div>
         <div class="panel">
           <div class="panel-title">⚡ Impressora, Energia &amp; Filamento</div>
-          <div class="field-group"><label>Potência da Impressora (W)</label><input type="number" id="potencia" value="350" step="10" min="50"></div>
-          <div class="field-group"><label>Custo do KWh (R$)</label><input type="number" id="kwh" value="1.05" step="0.01" min="0.01"></div>
-          <div class="field-group"><label>Preço do Kg de Filamento (R$)</label><input type="number" id="kgFilamento" value="100" step="1" min="1"></div>
+          <div class="field-group"><label>Potência da Impressora (W)</label><input type="number" id="potencia" value="0" step="10" min="50"></div>
+          <div class="field-group"><label>Custo do KWh (R$)</label><input type="number" id="kwh" value="0" step="0.01" min="0.01"></div>
+          <div class="field-group"><label>Preço do Kg de Filamento (R$)</label><input type="number" id="kgFilamento" value="0" step="1" min="1"></div>
         </div>
         <div class="panel">
           <div class="panel-title">$ Taxas de Plataforma</div>
           <div class="grid-2" style="margin-bottom:0;">
-            <div class="field-group"><label>Shopee (%)</label><input type="number" id="taxaShopee" value="20" step="0.5" min="0"></div>
-            <div class="field-group"><label>Shopee Fixo (R$)</label><input type="number" id="taxaShopeeR" value="4" step="0.5" min="0"></div>
-            <div class="field-group"><label>Mercado Livre (%)</label><input type="number" id="taxaML" value="19" step="0.5" min="0"></div>
+            <div class="field-group"><label>Shopee (%)</label><input type="number" id="taxaShopee" value="0" step="0.5" min="0"></div>
+            <div class="field-group"><label>Shopee Fixo (R$)</label><input type="number" id="taxaShopeeR" value="0" step="0.5" min="0"></div>
+            <div class="field-group"><label>Mercado Livre (%)</label><input type="number" id="taxaML" value="0" step="0.5" min="0"></div>
             <div class="field-group"><label>ML Fixo (R$)</label><input type="number" id="taxaMLR" value="0" step="0.5" min="0"></div>
           </div>
         </div>
@@ -1004,16 +1004,16 @@ footer {
     <div class="panel">
       <div class="panel-title">◉ Referências de Pintura &amp; Custos</div>
       <div class="grid-3">
-        <div class="field-group"><label>Valor Spray Primer (R$)</label><input type="number" id="primerVal" value="35" step="1" min="0"></div>
-        <div class="field-group"><label>Peças por Spray Primer</label><input type="number" id="primerQtd" value="20" step="1" min="1"></div>
+        <div class="field-group"><label>Valor Spray Primer (R$)</label><input type="number" id="primerVal" value="0" step="1" min="0"></div>
+        <div class="field-group"><label>Peças por Spray Primer</label><input type="number" id="primerQtd" value="0" step="1" min="1"></div>
         <div class="field-group"><label>Custo Primer / Peça</label><div class="result-card" style="margin:0;"><div class="result-value v-amber" id="c-primer" style="font-size:18px;">—</div></div></div>
-        <div class="field-group"><label>Valor Spray Verniz (R$)</label><input type="number" id="vernizVal" value="35" step="1" min="0"></div>
-        <div class="field-group"><label>Peças por Spray Verniz</label><input type="number" id="vernizQtd" value="20" step="1" min="1"></div>
+        <div class="field-group"><label>Valor Spray Verniz (R$)</label><input type="number" id="vernizVal" value="0" step="1" min="0"></div>
+        <div class="field-group"><label>Peças por Spray Verniz</label><input type="number" id="vernizQtd" value="0" step="1" min="1"></div>
         <div class="field-group"><label>Custo Verniz / Peça</label><div class="result-card" style="margin:0;"><div class="result-value v-amber" id="c-verniz" style="font-size:18px;">—</div></div></div>
       </div>
       <div class="grid-2">
-        <div class="field-group"><label>Custo / hora Mão de Obra (R$)</label><input type="number" id="custoHora" value="15" step="1" min="0"></div>
-        <div class="field-group"><label>Percentual de Falhas de Impressão (%)</label><input type="number" id="falhas" value="10" step="1" min="0" max="50"></div>
+        <div class="field-group"><label>Custo / hora Mão de Obra (R$)</label><input type="number" id="custoHora" value="0" step="1" min="0"></div>
+        <div class="field-group"><label>Percentual de Falhas de Impressão (%)</label><input type="number" id="falhas" value="0" step="1" min="0" max="50"></div>
       </div>
       <div class="grid-3" style="margin-bottom:0;">
         <div class="result-card" style="margin:0;"><div class="result-label">Pintura Simples — 1h</div><div class="result-value v-neon" id="c-pSimples">—</div></div>
@@ -1061,11 +1061,11 @@ footer {
           </div>
           <div style="display:flex;gap:8px;">
             <div style="flex:1;position:relative;">
-              <input type="number" id="markup" value="2" step="0.1" min="1.01" style="padding-right:28px;">
+              <input type="number" id="markup" value="2" step="0.1" min="1.01" style="padding-right:28px;" oninput="calc()">
               <span id="markup-unit" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:var(--neon);pointer-events:none;">×</span>
             </div>
             <div style="flex:1;position:relative;">
-              <input type="number" id="margem" value="50" step="1" min="1" max="99" style="padding-right:28px;">
+              <input type="number" id="margem" value="50" step="1" min="1" max="99" style="padding-right:28px;" oninput="calc()">
               <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:var(--sub);pointer-events:none;">%</span>
             </div>
           </div>
@@ -1100,7 +1100,7 @@ footer {
             <button class="tog" onclick="setPaint('complexa')">Complexa</button>
           </div>
           <div id="paint-fields">
-            <div class="field-group"><label>Tinta Acrílica (R$)</label><input type="number" id="tinta" value="2" step="0.5" min="0"></div>
+            <div class="field-group"><label>Tinta Acrílica (R$)</label><input type="number" id="tinta" value="0" step="0.5" min="0"></div>
             <div class="result-card" style="margin-bottom:0;"><div class="result-label">Custo de Pintura</div><div class="result-value v-amber" id="r-custoPintura">—</div></div>
           </div>
           <div id="paint-none-msg">Nenhuma pintura selecionada.</div>
@@ -1225,15 +1225,51 @@ footer {
 
       <!-- LISTA DE PRODUTOS CADASTRADOS -->
       <div>
-        <div class="panel">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-            <div class="panel-title" style="margin:0;border:none;padding:0;">📦 Produtos Salvos</div>
-            <button class="btn" style="height:32px;font-size:11px;padding:0 12px;" onclick="salvarDaCalc()">＋ Salvar da Calc</button>
+        <!-- FORMULÁRIO MANUAL -->
+        <div class="panel" style="margin-bottom:var(--gap);">
+          <div class="panel-title">➕ Cadastrar Produto</div>
+          <div class="field-group">
+            <label>Nome do Produto</label>
+            <input type="text" id="prod-nome" placeholder="Ex: Suporte Celular">
           </div>
+          <div class="grid-2" style="gap:8px;">
+            <div class="field-group">
+              <label>Custo Total (R$)</label>
+              <input type="number" id="prod-custo" placeholder="0,00" step="0.01" min="0" oninput="calcProdManual()">
+            </div>
+            <div class="field-group">
+              <label>Markup ×</label>
+              <input type="number" id="prod-markup" value="2" step="0.1" min="1.01" oninput="calcProdManual()">
+            </div>
+          </div>
+          <div id="prod-preview" style="display:none;background:var(--raised);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:10px;font-size:12px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="color:var(--sub);">Cliente Direto</span>
+              <span style="color:var(--neon);font-weight:700;" id="prod-prev-cliente">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="color:var(--sub);">Shopee</span>
+              <span style="color:var(--amber);font-weight:700;" id="prod-prev-shopee">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span style="color:var(--sub);">Mercado Livre</span>
+              <span style="color:var(--sky);font-weight:700;" id="prod-prev-ml">—</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn" style="flex:1;height:40px;justify-content:center;" onclick="salvarProdutoManual()">💾 Salvar Produto</button>
+            <button class="btn" style="height:40px;padding:0 12px;background:var(--card);color:var(--sub);font-size:11px;" onclick="salvarDaCalc()">＋ Da Calc</button>
+          </div>
+          <div id="prod-feedback" style="font-size:12px;color:var(--green);font-weight:700;margin-top:8px;min-height:18px;text-align:center;"></div>
+        </div>
+
+        <!-- LISTA -->
+        <div class="panel">
+          <div class="panel-title">📦 Produtos Salvos</div>
           <div id="produtos-lista"></div>
           <div id="produtos-empty" class="empty-state" style="padding:1.5rem 0;">
             <div class="empty-icon" style="font-size:28px;">📦</div>
-            Calcule um produto e clique em<br><strong>＋ Salvar da Calc</strong>
+            Nenhum produto cadastrado ainda.<br>Preencha o formulário acima.
           </div>
         </div>
       </div>
@@ -1389,6 +1425,7 @@ function iniciarApp() {
 // ─── STATE ───────────────────────────────────────────
 let paintMode = 'none';
 let precMode  = 'markup'; // 'markup' ou 'margem'
+let paintMode = 'none'; // pintura desativada por padrão
 const paintHours    = {none:0,simples:1,media:4,complexa:5};
 const paintTintaDef = {simples:2,media:4,complexa:6};
 let vendas = JSON.parse(localStorage.getItem('p3d_vendas') || '[]');
@@ -1579,6 +1616,60 @@ function salvarDaCalc() {
   saveProdutos();
   renderProdutos();
   alert('✓ "' + nome + '" salvo nos Produtos!');
+}
+
+function calcProdManual() {
+  const custo  = parseFloat(document.getElementById('prod-custo').value) || 0;
+  const markup = parseFloat(document.getElementById('prod-markup').value) || 2;
+  const tShopee = parseFloat(document.getElementById('taxaShopee').value) || 0;
+  const fShopee = parseFloat(document.getElementById('taxaShopeeR').value) || 0;
+  const tML     = parseFloat(document.getElementById('taxaML').value) || 0;
+  const fML     = parseFloat(document.getElementById('taxaMLR').value) || 0;
+
+  if (custo <= 0) { document.getElementById('prod-preview').style.display='none'; return; }
+
+  const base    = custo * markup;
+  const shopee  = tShopee > 0 ? (base + fShopee) / (1 - tShopee/100) : base;
+  const ml      = tML > 0     ? (base + fML)     / (1 - tML/100)     : base;
+
+  const fmt = v => 'R$ ' + v.toFixed(2).replace('.',',');
+  document.getElementById('prod-prev-cliente').textContent = fmt(base);
+  document.getElementById('prod-prev-shopee').textContent  = fmt(shopee);
+  document.getElementById('prod-prev-ml').textContent      = fmt(ml);
+  document.getElementById('prod-preview').style.display    = 'block';
+}
+
+function salvarProdutoManual() {
+  const nome   = document.getElementById('prod-nome').value.trim();
+  const custo  = parseFloat(document.getElementById('prod-custo').value) || 0;
+  const markup = parseFloat(document.getElementById('prod-markup').value) || 2;
+  const fb     = document.getElementById('prod-feedback');
+
+  if (!nome)   { fb.style.color='var(--red)'; fb.textContent='⚠ Informe o nome do produto.'; return; }
+  if (custo<=0){ fb.style.color='var(--red)'; fb.textContent='⚠ Informe o custo do produto.'; return; }
+
+  const tShopee = parseFloat(document.getElementById('taxaShopee').value) || 0;
+  const fShopee = parseFloat(document.getElementById('taxaShopeeR').value) || 0;
+  const tML     = parseFloat(document.getElementById('taxaML').value) || 0;
+  const fML     = parseFloat(document.getElementById('taxaMLR').value) || 0;
+
+  const base          = custo * markup;
+  const precoShopee   = tShopee > 0 ? (base + fShopee) / (1 - tShopee/100) : base;
+  const precoML       = tML > 0     ? (base + fML)     / (1 - tML/100)     : base;
+
+  produtos.push({ id: Date.now(), nome, custo, precoCliente: base, precoShopee, precoML });
+  saveProdutos();
+  renderProdutos();
+
+  // Limpar formulário
+  document.getElementById('prod-nome').value  = '';
+  document.getElementById('prod-custo').value = '';
+  document.getElementById('prod-markup').value = '2';
+  document.getElementById('prod-preview').style.display = 'none';
+
+  fb.style.color = 'var(--green)';
+  fb.textContent = '✓ "' + nome + '" salvo com sucesso!';
+  setTimeout(() => fb.textContent = '', 3000);
 }
 
 function deleteProduto(id) {
