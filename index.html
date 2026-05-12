@@ -1094,10 +1094,10 @@ footer {
         <div class="panel">
           <div class="panel-title">◉ Pintura do Produto</div>
           <div class="toggle-group">
-            <button class="tog active" onclick="setPaint('none')">Sem Pintura</button>
-            <button class="tog" onclick="setPaint('simples')">Simples</button>
-            <button class="tog" onclick="setPaint('media')">Média</button>
-            <button class="tog" onclick="setPaint('complexa')">Complexa</button>
+            <button class="tog active" id="paint-none"     onclick="setPaint('none')">Sem Pintura</button>
+            <button class="tog"        id="paint-simples"  onclick="setPaint('simples')">Simples</button>
+            <button class="tog"        id="paint-media"    onclick="setPaint('media')">Média</button>
+            <button class="tog"        id="paint-complexa" onclick="setPaint('complexa')">Complexa</button>
           </div>
           <div id="paint-fields">
             <div class="field-group"><label>Tinta Acrílica (R$)</label><input type="number" id="tinta" value="0" step="0.5" min="0"></div>
@@ -1484,8 +1484,10 @@ function updateSummary() {
 // ─── CALCULAR PRODUTO ─────────────────────────────────
 function setPaint(mode) {
   paintMode = mode;
-  ['none','simples','media','complexa'].forEach((m,i)=>
-    document.querySelectorAll('.tog')[i].classList.toggle('active',m===mode));
+  ['none','simples','media','complexa'].forEach(m => {
+    const el = document.getElementById('paint-' + m);
+    if (el) el.classList.toggle('active', m === mode);
+  });
   document.getElementById('paint-fields').style.display   = mode==='none'?'none':'block';
   document.getElementById('paint-none-msg').style.display = mode==='none'?'block':'none';
   if(mode!=='none') document.getElementById('tinta').value = paintTintaDef[mode]||2;
