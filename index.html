@@ -1611,12 +1611,18 @@ function totalAdicionais() {
 // ─── PRODUTOS ────────────────────────────────────────
 function salvarDaCalc() {
   const c = window._lastCalc;
-  if (!c || c.custo === 0) { alert('Calcule um produto primeiro!'); return; }
-  const nome = c.produto || 'Produto sem nome';
-  produtos.push({ id: Date.now(), nome, custo: c.custo, precoCliente: c.precoCliente, precoShopee: c.precoShopee, precoML: c.precoML });
-  saveProdutos();
-  renderProdutos();
-  alert('✓ "' + nome + '" salvo nos Produtos!');
+  if (!c || !c.custo || c.custo === 0) { alert('Preencha os campos e calcule primeiro!'); return; }
+  const nome = (document.getElementById('nomeProduto')?.value?.trim()) || c.produto || 'Produto sem nome';
+  try {
+    produtos.push({ id: Date.now(), nome, custo: c.custo, precoCliente: c.precoCliente, precoShopee: c.precoShopee, precoML: c.precoML });
+    saveProdutos();
+    renderProdutos();
+    switchTab('produtos');
+    alert('✓ "' + nome + '" salvo nos Produtos!');
+  } catch(e) {
+    console.error('Erro ao salvar da calc:', e);
+    alert('Erro ao salvar. Tente novamente.');
+  }
 }
 
 function parseBR(val) {
@@ -1663,9 +1669,13 @@ function salvarProdutoManual() {
   const precoShopee   = tShopee > 0 ? (base + fShopee) / (1 - tShopee/100) : base;
   const precoML       = tML > 0     ? (base + fML)     / (1 - tML/100)     : base;
 
-  produtos.push({ id: Date.now(), nome, custo, precoCliente: base, precoShopee, precoML });
-  saveProdutos();
-  renderProdutos();
+  try {
+    produtos.push({ id: Date.now(), nome, custo, precoCliente: base, precoShopee, precoML });
+    saveProdutos();
+    renderProdutos();
+  } catch(e) {
+    console.error('Erro ao salvar produto:', e);
+  }
 
   // Limpar formulário
   document.getElementById('prod-nome').value  = '';
@@ -1674,7 +1684,7 @@ function salvarProdutoManual() {
   document.getElementById('prod-preview').style.display = 'none';
 
   fb.style.color = 'var(--green)';
-  fb.textContent = '✓ "' + nome + '" salvo com sucesso!';
+  fb.textContent = '✓ "' + nome + '" salvo!';
   setTimeout(() => fb.textContent = '', 3000);
 }
 
@@ -1689,13 +1699,15 @@ function renderProdutos() {
   const empty  = document.getElementById('produtos-empty');
   const selDiv = document.getElementById('kit-selecao');
   const selEmpty = document.getElementById('kit-selecao-empty');
+
+  if (!lista) return; // guard
+
   lista.innerHTML = '';
-  selDiv.innerHTML = '';
+  if (selDiv) selDiv.innerHTML = '';
 
   if (!produtos.length) {
-    empty.style.display = 'block';
-    selDiv.appendChild(selEmpty);
-    selEmpty.style.display = 'block';
+    if (empty) empty.style.display = 'block';
+    if (selDiv && selEmpty) { selDiv.appendChild(selEmpty); selEmpty.style.display = 'block'; }
     return;
   }
   empty.style.display = 'none';
