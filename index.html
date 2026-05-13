@@ -1724,11 +1724,14 @@ function renderProdutos() {
 
   if (!lista) return;
 
-  // Limpar lista e kit (preservar apenas o elemento kit-selecao-empty)
+  // Limpar lista
   lista.innerHTML = '';
+
+  // Limpar só os labels do kit (não destrói o empty)
   if (selDiv) {
-    // Remover só os labels, preservar o elemento empty
-    Array.from(selDiv.querySelectorAll('label')).forEach(el => el.remove());
+    Array.from(selDiv.children).forEach(el => {
+      if (el.tagName === 'LABEL') el.remove();
+    });
   }
 
   if (!produtos.length) {
@@ -1746,14 +1749,17 @@ function renderProdutos() {
     // Card na lista
     const card = document.createElement('div');
     card.className = 'produto-card';
+    const lucroCliente = (p.precoCliente||0) - (p.custo||0);
+    const lucroShopee  = (p.precoShopee||0)  - (p.custo||0);
+    const lucroML      = (p.precoML||0)      - (p.custo||0);
     card.innerHTML = `
       <div class="produto-info">
         <div class="produto-nome" title="${p.nome}">${p.nome}</div>
         <div class="produto-custo">Custo: <span>${fmt(p.custo)}</span> &nbsp;|&nbsp; Cliente: <span>${fmt(p.precoCliente)}</span> &nbsp;|&nbsp; Shopee: <span>${fmt(p.precoShopee)}</span></div>
         <div class="produto-custo" style="margin-top:4px;">
-          Lucro Direto: <span style="color:var(--green);">+${fmt(p.precoCliente - p.custo)}</span>
-          &nbsp;|&nbsp; Lucro Shopee: <span style="color:var(--green);">+${fmt(p.precoShopee - p.custo)}</span>
-          &nbsp;|&nbsp; Lucro ML: <span style="color:var(--green);">+${fmt(p.precoML - p.custo)}</span>
+          Lucro Direto: <span style="color:var(--green);">+${fmt(lucroCliente)}</span>
+          &nbsp;|&nbsp; Lucro Shopee: <span style="color:var(--green);">+${fmt(lucroShopee)}</span>
+          &nbsp;|&nbsp; Lucro ML: <span style="color:var(--green);">+${fmt(lucroML)}</span>
         </div>
       </div>
       <div class="produto-actions">
