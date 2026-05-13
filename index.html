@@ -1611,18 +1611,25 @@ function totalAdicionais() {
 // ─── PRODUTOS ────────────────────────────────────────
 function salvarDaCalc() {
   const c = window._lastCalc;
-  if (!c || !c.custo || c.custo === 0) { alert('Preencha os campos e calcule primeiro!'); return; }
-  const nome = (document.getElementById('nomeProduto')?.value?.trim()) || c.produto || 'Produto sem nome';
-  try {
-    produtos.push({ id: Date.now(), nome, custo: c.custo, precoCliente: c.precoCliente, precoShopee: c.precoShopee, precoML: c.precoML });
-    saveProdutos();
-    renderProdutos();
-    switchTab('produtos');
-    alert('✓ "' + nome + '" salvo nos Produtos!');
-  } catch(e) {
-    console.error('Erro ao salvar da calc:', e);
-    alert('Erro ao salvar. Tente novamente.');
+  if (!c || !c.custo || c.custo === 0) {
+    alert('Calcule um produto primeiro na aba Calcular!');
+    return;
   }
+  const nomeEl = document.getElementById('nomeProduto');
+  const nome = (nomeEl && nomeEl.value.trim()) ? nomeEl.value.trim() : (c.produto || 'Produto sem nome');
+  produtos.push({
+    id: Date.now(),
+    nome,
+    custo: c.custo,
+    precoCliente: c.precoCliente,
+    precoShopee:  c.precoShopee,
+    precoML:      c.precoML
+  });
+  saveProdutos();
+  renderProdutos();
+  switchTab('produtos');
+  const fb = document.getElementById('prod-feedback');
+  if (fb) { fb.style.color='var(--green)'; fb.textContent='✓ "'+nome+'" salvo da calculadora!'; setTimeout(()=>fb.textContent='',3000); }
 }
 
 function parseBR(val) {
@@ -1698,20 +1705,26 @@ function renderProdutos() {
   const lista  = document.getElementById('produtos-lista');
   const empty  = document.getElementById('produtos-empty');
   const selDiv = document.getElementById('kit-selecao');
-  const selEmpty = document.getElementById('kit-selecao-empty');
 
-  if (!lista) return; // guard
+  if (!lista) return;
 
+  // Limpar lista e kit (preservar apenas o elemento kit-selecao-empty)
   lista.innerHTML = '';
-  if (selDiv) selDiv.innerHTML = '';
+  if (selDiv) {
+    // Remover só os labels, preservar o elemento empty
+    Array.from(selDiv.querySelectorAll('label')).forEach(el => el.remove());
+  }
 
   if (!produtos.length) {
-    if (empty) empty.style.display = 'block';
-    if (selDiv && selEmpty) { selDiv.appendChild(selEmpty); selEmpty.style.display = 'block'; }
+    if (empty) empty.style.display = 'flex';
+    const se = document.getElementById('kit-selecao-empty');
+    if (se) se.style.display = 'block';
     return;
   }
-  empty.style.display = 'none';
-  selEmpty.style.display = 'none';
+
+  if (empty) empty.style.display = 'none';
+  const se = document.getElementById('kit-selecao-empty');
+  if (se) se.style.display = 'none';
 
   produtos.forEach(p => {
     // Card na lista
@@ -1728,14 +1741,16 @@ function renderProdutos() {
     lista.appendChild(card);
 
     // Checkbox na seleção de kit
-    const row = document.createElement('label');
-    row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;border-bottom:1px solid var(--line);font-size:13px;font-weight:600;';
-    row.innerHTML = `
-      <input type="checkbox" data-id="${p.id}" data-custo="${p.custo}" data-nome="${p.nome}"
-        style="width:16px;height:16px;accent-color:var(--neon);flex-shrink:0;" onchange="calcKit()">
-      <span style="flex:1;">${p.nome}</span>
-      <span style="color:var(--amber);font-weight:700;font-size:12px;">${fmt(p.custo)}</span>`;
-    selDiv.appendChild(row);
+    if (selDiv) {
+      const row = document.createElement('label');
+      row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:9px 12px;cursor:pointer;border-bottom:1px solid var(--line);font-size:13px;font-weight:600;';
+      row.innerHTML = `
+        <input type="checkbox" data-id="${p.id}" data-custo="${p.custo}" data-nome="${p.nome}"
+          style="width:16px;height:16px;accent-color:var(--neon);flex-shrink:0;" onchange="calcKit()">
+        <span style="flex:1;">${p.nome}</span>
+        <span style="color:var(--amber);font-weight:700;font-size:12px;">${fmt(p.custo)}</span>`;
+      selDiv.appendChild(row);
+    }
   });
 }
 
