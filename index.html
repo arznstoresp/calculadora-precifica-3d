@@ -1327,6 +1327,22 @@ footer {
                 <span class="price-val v-sky" id="kit-preco-ml">—</span>
               </div>
             </div>
+            <div class="divider"></div>
+            <div style="background:rgba(61,220,132,.06);border:1px solid rgba(61,220,132,.15);border-radius:var(--radius-sm);padding:10px 12px;">
+              <div style="font-size:10px;font-weight:800;color:#3ddc84;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">💰 Lucro Líquido</div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:13px;">
+                <span style="color:var(--sub);">Cliente Direto</span>
+                <span style="color:#3ddc84;font-weight:800;" id="kit-lucro-cliente">—</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:13px;">
+                <span style="color:var(--sub);">Shopee</span>
+                <span style="color:#3ddc84;font-weight:800;" id="kit-lucro-shopee">—</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;">
+                <span style="color:var(--sub);">Mercado Livre</span>
+                <span style="color:#3ddc84;font-weight:800;" id="kit-lucro-ml">—</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1734,6 +1750,11 @@ function renderProdutos() {
       <div class="produto-info">
         <div class="produto-nome" title="${p.nome}">${p.nome}</div>
         <div class="produto-custo">Custo: <span>${fmt(p.custo)}</span> &nbsp;|&nbsp; Cliente: <span>${fmt(p.precoCliente)}</span> &nbsp;|&nbsp; Shopee: <span>${fmt(p.precoShopee)}</span></div>
+        <div class="produto-custo" style="margin-top:4px;">
+          Lucro Direto: <span style="color:var(--green);">+${fmt(p.precoCliente - p.custo)}</span>
+          &nbsp;|&nbsp; Lucro Shopee: <span style="color:var(--green);">+${fmt(p.precoShopee - p.custo)}</span>
+          &nbsp;|&nbsp; Lucro ML: <span style="color:var(--green);">+${fmt(p.precoML - p.custo)}</span>
+        </div>
       </div>
       <div class="produto-actions">
         <button class="del-btn" onclick="deleteProduto(${p.id})" title="Remover">✕</button>
@@ -1778,6 +1799,10 @@ function calcKit() {
   const pML      = base === 0 ? 0 : Math.ceil((base + txMR) / (1 - txM));
   const nomeKit  = document.getElementById('kit-nome').value.trim() || 'Kit';
 
+  const lucroCliente = base    - custoTotal;
+  const lucroShopee  = pShopee - custoTotal;
+  const lucroML      = pML     - custoTotal;
+
   document.getElementById('kit-resultado-nome').textContent = '▲ ' + nomeKit;
   document.getElementById('kit-itens-lista').innerHTML = itensHTML;
   set('kit-custo-total',   fmt(custoTotal));
@@ -1786,6 +1811,9 @@ function calcKit() {
   set('kit-preco-ml',      fmt(pML));
   set('kit-shopee-pct',    v('taxaShopee') + '%+R$' + txSR);
   set('kit-ml-pct',        v('taxaML') + '%');
+  set('kit-lucro-cliente', '+' + fmt(lucroCliente));
+  set('kit-lucro-shopee',  '+' + fmt(lucroShopee));
+  set('kit-lucro-ml',      '+' + fmt(lucroML));
   resultado.style.display = 'block';
 }
 
