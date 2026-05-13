@@ -1526,6 +1526,7 @@ body.light-mode {
         <input type="text" id="meta-valor" placeholder="Ex: 2000,00" inputmode="decimal"
           style="background:var(--raised);border:1.5px solid var(--line2);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;outline:none;">
         <button class="btn" style="font-size:12px;" onclick="salvarMeta()">Definir Meta</button>
+        <button class="btn" style="font-size:12px;background:var(--card);color:var(--sub);border:1px solid var(--line2);" onclick="resetarMeta()" title="Remover meta">✕</button>
       </div>
     </div>
 
@@ -2645,6 +2646,13 @@ function gerarOrcamento(id) {
 }
 
 // ─── META MENSAL ──────────────────────────────────────────
+function resetarMeta() {
+  localStorage.removeItem('p3d_meta');
+  const metaEl = document.getElementById('meta-valor');
+  if (metaEl) { metaEl.value = ''; metaEl.placeholder = 'Ex: 2000,00'; }
+  atualizarMeta();
+}
+
 function salvarMeta() {
   const val = parseBR(document.getElementById('meta-valor').value);
   if (val <= 0) { alert('Informe um valor de meta válido.'); return; }
