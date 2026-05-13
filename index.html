@@ -1095,6 +1095,36 @@ body.light-mode {
 .destaque-nome  { font-size: 16px; font-weight: 800; color: var(--neon); }
 .destaque-sub   { font-size: 12px; color: var(--sub); }
 
+
+/* ── KITS SALVOS ── */
+.kit-saved-badge {
+  display: inline-block;
+  background: rgba(255,106,0,.1);
+  border: 1px solid rgba(255,106,0,.25);
+  color: var(--neon);
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.kit-saved-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  gap: 8px;
+}
+.kit-saved-row:last-child { border-bottom: none; }
+.kit-saved-nome { font-weight: 700; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kit-saved-preco { font-size: 12px; color: var(--neon); font-weight: 800; flex-shrink: 0; }
+.kit-saved-actions { display: flex; gap: 4px; flex-shrink: 0; }
+
 </style>
 </head>
 <body>
@@ -1424,7 +1454,15 @@ body.light-mode {
     <div class="panel">
       <div class="panel-title">+ Registrar Venda</div>
       <div class="venda-form-grid">
-        <div class="field-group" style="margin:0;"><label>Produto</label><input type="text" id="v-produto" placeholder="Nome do produto"></div>
+        <div class="field-group" style="margin:0;">
+          <label>Produto</label>
+          <div style="display:flex;gap:6px;">
+            <input type="text" id="v-produto" placeholder="Nome do produto" style="flex:1;">
+            <select id="v-kit-select" onchange="preencherVendaDoKit()" style="width:110px;height:var(--input-h);background:var(--raised);border:1.5px solid var(--line2);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;font-size:12px;padding:0 6px;outline:none;flex-shrink:0;">
+              <option value="">📦 Kit...</option>
+            </select>
+          </div>
+        </div>
         <div class="field-group" style="margin:0;"><label>Plataforma</label>
           <select id="v-plataforma">
             <option value="Shopee">Shopee</option>
@@ -1700,9 +1738,28 @@ body.light-mode {
                 <span style="color:#3ddc84;font-weight:800;" id="kit-lucro-ml">—</span>
               </div>
             </div>
+            <div style="margin-top:10px;">
+              <button class="btn" style="width:100%;height:38px;justify-content:center;font-size:12px;" onclick="salvarKit()">💾 Salvar este Kit</button>
+              <div id="kit-save-msg" style="font-size:11px;color:var(--green);font-weight:700;text-align:center;margin-top:6px;display:none;">✓ Kit salvo!</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KITS SALVOS -->
+        <div class="panel" style="margin-top:var(--gap);">
+          <div class="collapsible-header" onclick="toggleCollapse('kits-salvos')">
+            <div class="panel-title" style="margin:0;border:none;padding:0;">📦 Kits Salvos</div>
+            <span class="collapse-icon" id="icon-kits-salvos">▾</span>
+          </div>
+          <div class="collapsible-body" id="body-kits-salvos">
+            <div style="height:8px;"></div>
+            <div id="kits-lista"></div>
+            <div id="kits-empty" style="text-align:center;padding:1rem;font-size:13px;color:var(--hint);">Nenhum kit salvo ainda.</div>
           </div>
         </div>
       </div>
+      </div><!-- /collapsible-body montar-kit -->
+        </div>
 
     </div>
   </div>
@@ -1793,6 +1850,8 @@ function iniciarApp() {
   calcConfig();
   setPaint('none');
   renderProdutos();
+  renderKits();
+  preencherSelectKits();
 }
 
 // ─── STATE ───────────────────────────────────────────
@@ -2429,7 +2488,7 @@ function renderDash() {
 function exportBackup() {
   const config = {};
   CONFIG_FIELDS.forEach(id => config[id] = document.getElementById(id).value);
-  const backup = { versao: '4.0', data: new Date().toISOString(), config, vendas, produtos };
+  const backup = { versao: '5.0', data: new Date().toISOString(), config, vendas, produtos, kits };
   const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -2459,6 +2518,10 @@ function importBackup(event) {
         produtos = data.produtos;
         saveProdutos();
       }
+      if (data.kits && Array.isArray(data.kits)) {
+        kits = data.kits;
+        saveKits();
+      }
       calc(); calcConfig();
       const msg = document.getElementById('backup-msg');
       msg.style.display = 'inline';
@@ -2472,6 +2535,107 @@ function importBackup(event) {
 }
 
 
+
+
+// ─── KITS SALVOS ──────────────────────────────────────────
+let kits = JSON.parse(localStorage.getItem('p3d_kits') || '[]');
+const saveKits = () => localStorage.setItem('p3d_kits', JSON.stringify(kits));
+
+function salvarKit() {
+  const nome = document.getElementById('kit-nome')?.value.trim() || 'Kit';
+  const custo    = parseFloat(document.getElementById('kit-custo-total')?.textContent?.replace('R$','').replace(',','.')) || 0;
+  const cliente  = parseFloat(document.getElementById('kit-preco-cliente')?.textContent?.replace('R$','').replace(',','.')) || 0;
+  const shopee   = parseFloat(document.getElementById('kit-preco-shopee')?.textContent?.replace('R$','').replace(',','.')) || 0;
+  const ml       = parseFloat(document.getElementById('kit-preco-ml')?.textContent?.replace('R$','').replace(',','.')) || 0;
+
+  if (!nome || custo <= 0) { alert('Calcule o kit antes de salvar.'); return; }
+
+  // Verificar duplicata pelo nome
+  const existe = kits.findIndex(k => k.nome === nome);
+  const kit = { id: Date.now(), nome, custo, precoCliente: cliente, precoShopee: shopee, precoML: ml };
+  if (existe > -1) {
+    if (!confirm(`Kit "${nome}" já existe. Deseja substituir?`)) return;
+    kits[existe] = kit;
+  } else {
+    kits.push(kit);
+  }
+  saveKits();
+  renderKits();
+  preencherSelectKits();
+
+  const msg = document.getElementById('kit-save-msg');
+  if (msg) { msg.style.display = 'block'; setTimeout(() => msg.style.display = 'none', 2500); }
+}
+
+function deleteKit(id) {
+  kits = kits.filter(k => k.id !== id);
+  saveKits();
+  renderKits();
+  preencherSelectKits();
+}
+
+function renderKits() {
+  const lista = document.getElementById('kits-lista');
+  const empty = document.getElementById('kits-empty');
+  if (!lista) return;
+  lista.innerHTML = '';
+  if (!kits.length) { if (empty) empty.style.display = 'block'; return; }
+  if (empty) empty.style.display = 'none';
+  kits.forEach(k => {
+    const row = document.createElement('div');
+    row.className = 'kit-saved-row';
+    row.innerHTML = `
+      <span class="kit-saved-nome" title="${k.nome}">${k.nome}</span>
+      <span class="kit-saved-preco">${fmt(k.precoCliente)}</span>
+      <div class="kit-saved-actions">
+        <button class="del-btn" onclick="usarKitNaVenda(${k.id})" style="color:var(--green);font-size:13px;" title="Usar na venda">🛒</button>
+        <button class="del-btn" onclick="deleteKit(${k.id})" title="Excluir">✕</button>
+      </div>`;
+    lista.appendChild(row);
+  });
+}
+
+function preencherSelectKits() {
+  const sel = document.getElementById('v-kit-select');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">📦 Kit...</option>';
+  kits.forEach(k => {
+    const opt = document.createElement('option');
+    opt.value = k.id;
+    opt.textContent = k.nome;
+    sel.appendChild(opt);
+  });
+}
+
+function preencherVendaDoKit() {
+  const sel = document.getElementById('v-kit-select');
+  if (!sel || !sel.value) return;
+  const k = kits.find(x => x.id === parseInt(sel.value));
+  if (!k) return;
+  document.getElementById('v-produto').value = k.nome;
+
+  // Preencher custo e valor conforme plataforma selecionada
+  const plat = document.getElementById('v-plataforma')?.value || 'Direto';
+  const precos = { 'Shopee': k.precoShopee, 'Mercado Livre': k.precoML, 'Direto': k.precoCliente };
+  const preco = precos[plat] || k.precoCliente;
+
+  document.getElementById('v-valor').value = preco.toFixed(2);
+  document.getElementById('v-custo').value = k.custo.toFixed(2);
+  sel.value = ''; // reset select
+}
+
+function usarKitNaVenda(id) {
+  const k = kits.find(x => x.id === id);
+  if (!k) return;
+  switchTab('vendas');
+  setTimeout(() => {
+    document.getElementById('v-produto').value = k.nome;
+    const plat = document.getElementById('v-plataforma')?.value || 'Direto';
+    const precos = { 'Shopee': k.precoShopee, 'Mercado Livre': k.precoML, 'Direto': k.precoCliente };
+    document.getElementById('v-valor').value = (precos[plat] || k.precoCliente).toFixed(2);
+    document.getElementById('v-custo').value = k.custo.toFixed(2);
+  }, 100);
+}
 
 // ─── EDITAR VENDA ─────────────────────────────────────────
 function editarVenda(id) {
