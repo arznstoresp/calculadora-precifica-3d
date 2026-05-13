@@ -1129,6 +1129,62 @@ body.light-mode {
 <button class="back-top" id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Voltar ao topo">↑</button>
 
 
+
+<!-- MODAL EDITAR VENDA -->
+<div class="modal-overlay" id="modal-editar-venda" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Editar Venda</div>
+    <button class="modal-close" onclick="fecharModalEditarVenda()">✕</button>
+    <input type="hidden" id="edit-venda-id">
+    <div class="grid-2" style="gap:8px;">
+      <div class="field-group">
+        <label>Produto</label>
+        <input type="text" id="edit-venda-prod" placeholder="Nome do produto">
+      </div>
+      <div class="field-group">
+        <label>Data</label>
+        <input type="date" id="edit-venda-data">
+      </div>
+    </div>
+    <div class="grid-2" style="gap:8px;">
+      <div class="field-group">
+        <label>Plataforma</label>
+        <select id="edit-venda-plat" style="height:var(--input-h);background:var(--raised);border:1.5px solid var(--line2);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:0 12px;outline:none;width:100%;">
+          <option>Direto</option>
+          <option>Shopee</option>
+          <option>Mercado Livre</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Quantidade</label>
+        <input type="number" id="edit-venda-qtd" min="1" value="1">
+      </div>
+    </div>
+    <div class="grid-2" style="gap:8px;">
+      <div class="field-group">
+        <label>Valor Unit. (R$)</label>
+        <input type="number" id="edit-venda-valor" placeholder="0.00" step="0.01" min="0" oninput="calcEditVendaLucro()">
+      </div>
+      <div class="field-group">
+        <label>Custo Unit. (R$)</label>
+        <input type="number" id="edit-venda-custo" placeholder="0.00" step="0.01" min="0" oninput="calcEditVendaLucro()">
+      </div>
+    </div>
+    <div id="edit-venda-lucro-preview" style="background:var(--raised);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:12px;font-size:12px;display:flex;justify-content:space-between;">
+      <span style="color:var(--sub);">Lucro estimado</span>
+      <span style="color:var(--neon);font-weight:800;" id="edit-venda-lucro-val">—</span>
+    </div>
+    <div class="field-group">
+      <label>Observação (opcional)</label>
+      <input type="text" id="edit-venda-obs" placeholder="Ex: pedido especial">
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px;">
+      <button class="btn" style="flex:1;height:40px;justify-content:center;" onclick="salvarEdicaoVenda()">💾 Salvar</button>
+      <button class="btn" style="height:40px;padding:0 14px;background:var(--card);color:var(--sub);" onclick="fecharModalEditarVenda()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL EDITAR PRODUTO -->
 <div class="modal-overlay" id="modal-editar" style="display:none;">
   <div class="modal-box">
@@ -2218,7 +2274,7 @@ function renderVendas() {
       <td style="color:var(--sub);">${s.cus?fmt(s.cus):'—'}</td>
       <td style="color:${lucroCol};font-weight:700;">${s.cus?fmt(lucro):'—'}</td>
       <td style="font-weight:800;color:var(--text);">${fmt(fat)}</td>
-      <td><button class="del-btn" onclick="deleteVenda(${s.id})">✕</button></td>
+      <td style="display:flex;gap:4px;"><button class="del-btn" onclick="editarVenda(${s.id})" style="color:var(--neon);font-size:13px;" title="Editar">✏️</button><button class="del-btn" onclick="deleteVenda(${s.id})" title="Excluir">✕</button></td>
     </tr>`;
   });
   set('v-total-fat',   fmt(totFat));
@@ -2414,6 +2470,59 @@ function importBackup(event) {
   event.target.value = '';
 }
 
+
+
+// ─── EDITAR VENDA ─────────────────────────────────────────
+function editarVenda(id) {
+  const v = vendas.find(x => x.id === id);
+  if (!v) return;
+  document.getElementById('edit-venda-id').value    = id;
+  document.getElementById('edit-venda-prod').value  = v.prod || '';
+  document.getElementById('edit-venda-data').value  = v.data || '';
+  document.getElementById('edit-venda-plat').value  = v.plat || 'Direto';
+  document.getElementById('edit-venda-qtd').value   = v.qtd || 1;
+  document.getElementById('edit-venda-valor').value = v.val || '';
+  document.getElementById('edit-venda-custo').value = v.cus || '';
+  document.getElementById('edit-venda-obs').value   = v.obs || '';
+  calcEditVendaLucro();
+  document.getElementById('modal-editar-venda').style.display = 'flex';
+}
+
+function fecharModalEditarVenda() {
+  document.getElementById('modal-editar-venda').style.display = 'none';
+}
+
+function calcEditVendaLucro() {
+  const val = parseFloat(document.getElementById('edit-venda-valor').value) || 0;
+  const cus = parseFloat(document.getElementById('edit-venda-custo').value) || 0;
+  const qtd = parseInt(document.getElementById('edit-venda-qtd').value) || 1;
+  const lucroEl = document.getElementById('edit-venda-lucro-val');
+  if (lucroEl) {
+    const lucro = (val - cus) * qtd;
+    lucroEl.textContent = cus > 0 ? fmt(lucro) : '—';
+    lucroEl.style.color = lucro >= 0 ? 'var(--neon)' : 'var(--red)';
+  }
+}
+
+function salvarEdicaoVenda() {
+  const id   = parseFloat(document.getElementById('edit-venda-id').value);
+  const prod = document.getElementById('edit-venda-prod').value.trim();
+  const data = document.getElementById('edit-venda-data').value;
+  const plat = document.getElementById('edit-venda-plat').value;
+  const qtd  = parseInt(document.getElementById('edit-venda-qtd').value) || 1;
+  const val  = parseFloat(document.getElementById('edit-venda-valor').value) || 0;
+  const cus  = parseFloat(document.getElementById('edit-venda-custo').value) || 0;
+  const obs  = document.getElementById('edit-venda-obs').value.trim();
+  if (!prod || !data || val <= 0) { alert('Preencha produto, data e valor.'); return; }
+  const idx = vendas.findIndex(x => x.id === id);
+  if (idx > -1) {
+    vendas[idx] = { ...vendas[idx], prod, data, plat, qtd, val, cus, obs };
+    saveVendas();
+    populateMesFilter('f-mes');
+    renderVendas();
+  }
+  fecharModalEditarVenda();
+}
 
 // ─── TEMA CLARO/ESCURO ────────────────────────────────────
 function toggleTheme() {
