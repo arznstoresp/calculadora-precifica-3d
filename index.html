@@ -931,6 +931,170 @@ footer {
   opacity: 0;
 }
 
+
+/* ── MODO CLARO ── */
+body.light-mode {
+  --bg:      #f5f5f0;
+  --surface: #ffffff;
+  --card:    #f0ede8;
+  --raised:  #e8e4df;
+  --line:    #d5cfc8;
+  --line2:   #c5bfb8;
+  --text:    #1a1208;
+  --sub:     #6a5a48;
+  --hint:    #a09080;
+}
+
+/* ── TEMA TOGGLE ── */
+.theme-toggle {
+  position: fixed;
+  top: 14px;
+  right: 60px;
+  z-index: 200;
+  background: var(--card);
+  border: 1px solid var(--line2);
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+/* ── BACK TO TOP ── */
+.back-top {
+  position: fixed;
+  bottom: 76px;
+  right: 16px;
+  z-index: 150;
+  width: 36px; height: 36px;
+  background: var(--card);
+  border: 1px solid var(--line2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+.back-top.visible { opacity: 1; pointer-events: auto; }
+
+/* ── MODAL EDITAR PRODUTO ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+.modal-box {
+  background: var(--surface);
+  border: 1px solid var(--line2);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+}
+.modal-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--neon);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+}
+.modal-close {
+  position: absolute;
+  top: 12px; right: 14px;
+  background: none;
+  border: none;
+  color: var(--sub);
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* ── META DASHBOARD ── */
+.meta-bar-wrap {
+  margin-bottom: 1rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--pad);
+}
+.meta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.meta-label { font-size: 12px; font-weight: 700; color: var(--sub); text-transform: uppercase; letter-spacing: 1px; }
+.meta-val   { font-size: 14px; font-weight: 800; color: var(--neon); }
+.meta-track {
+  height: 10px;
+  background: var(--raised);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.meta-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--neon), var(--purple));
+  border-radius: 100px;
+  transition: width .5s ease;
+}
+.meta-input-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+.meta-input-row input {
+  flex: 1;
+  height: 34px;
+  font-size: 13px;
+  padding: 0 10px;
+}
+.meta-input-row button {
+  height: 34px;
+  padding: 0 14px;
+  font-size: 12px;
+}
+
+/* ── CARD ORÇAMENTO ── */
+.orcamento-card {
+  background: linear-gradient(135deg, #1a0a00, #0f0500);
+  border: 1.5px solid var(--neon);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-top: 10px;
+}
+.orc-header { font-size: 10px; font-weight: 800; color: var(--neon); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+.orc-nome   { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+.orc-row    { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+.orc-label  { color: var(--sub); }
+.orc-price  { font-weight: 800; }
+
+/* ── PRODUTO MAIS LUCRATIVO ── */
+.destaque-card {
+  background: linear-gradient(135deg, rgba(255,106,0,.12), rgba(255,106,0,.04));
+  border: 1.5px solid rgba(255,106,0,.3);
+  border-radius: var(--radius);
+  padding: var(--pad);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.destaque-icon { font-size: 28px; }
+.destaque-title { font-size: 10px; font-weight: 700; color: var(--sub); text-transform: uppercase; letter-spacing: 1px; }
+.destaque-nome  { font-size: 16px; font-weight: 800; color: var(--neon); }
+.destaque-sub   { font-size: 12px; color: var(--sub); }
+
 </style>
 </head>
 <body>
@@ -955,6 +1119,53 @@ footer {
         </span>
         <span class="license-footer-cta-price">R$&nbsp;27</span>
       </a>
+    </div>
+  </div>
+</div>
+
+<!-- TEMA TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">🌙</button>
+<!-- VOLTAR AO TOPO -->
+<button class="back-top" id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Voltar ao topo">↑</button>
+
+
+<!-- MODAL EDITAR PRODUTO -->
+<div class="modal-overlay" id="modal-editar" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-title">✏️ Editar Produto</div>
+    <button class="modal-close" onclick="fecharModalEditar()">✕</button>
+    <input type="hidden" id="edit-id">
+    <div class="field-group">
+      <label>Nome</label>
+      <input type="text" id="edit-nome" placeholder="Nome do produto">
+    </div>
+    <div class="grid-2" style="gap:8px;">
+      <div class="field-group">
+        <label>Custo Total (R$)</label>
+        <input type="text" id="edit-custo" inputmode="decimal" placeholder="0,00" oninput="calcEditPreview()">
+      </div>
+      <div class="field-group">
+        <label>Markup ×</label>
+        <input type="number" id="edit-markup" value="2" step="0.1" min="1.01" oninput="calcEditPreview()">
+      </div>
+    </div>
+    <div id="edit-preview" style="background:var(--raised);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:12px;font-size:12px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="color:var(--sub);">Cliente</span>
+        <span style="color:var(--neon);font-weight:700;" id="edit-prev-cliente">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="color:var(--sub);">Shopee</span>
+        <span style="color:var(--amber);font-weight:700;" id="edit-prev-shopee">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;">
+        <span style="color:var(--sub);">Mercado Livre</span>
+        <span style="color:var(--sky);font-weight:700;" id="edit-prev-ml">—</span>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn" style="flex:1;height:40px;justify-content:center;" onclick="salvarEdicaoProduto()">💾 Salvar</button>
+      <button class="btn" style="height:40px;padding:0 14px;background:var(--card);color:var(--sub);" onclick="fecharModalEditar()">Cancelar</button>
     </div>
   </div>
 </div>
@@ -1242,6 +1453,36 @@ footer {
       </div>
     </div>
 
+    <!-- META MENSAL -->
+    <div class="meta-bar-wrap">
+      <div class="meta-header">
+        <span class="meta-label">🎯 Meta Mensal de Faturamento</span>
+        <span class="meta-val" id="meta-pct-text">0%</span>
+      </div>
+      <div class="meta-track">
+        <div class="meta-fill" id="meta-fill" style="width:0%;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-top:6px;">
+        <span id="meta-fat-atual">Faturamento: R$ 0</span>
+        <span id="meta-faltam">Meta: não definida</span>
+      </div>
+      <div class="meta-input-row">
+        <input type="text" id="meta-valor" placeholder="Ex: 2000,00" inputmode="decimal"
+          style="background:var(--raised);border:1.5px solid var(--line2);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;outline:none;">
+        <button class="btn" style="font-size:12px;" onclick="salvarMeta()">Definir Meta</button>
+      </div>
+    </div>
+
+    <!-- PRODUTO MAIS LUCRATIVO -->
+    <div class="destaque-card" id="destaque-card" style="display:none;">
+      <div class="destaque-icon">🏆</div>
+      <div>
+        <div class="destaque-title">Produto mais lucrativo</div>
+        <div class="destaque-nome" id="destaque-nome">—</div>
+        <div class="destaque-sub" id="destaque-sub">—</div>
+      </div>
+    </div>
+
     <div id="d-empty-all" class="empty-state"><div class="empty-icon">📊</div>Registre vendas para ver o dashboard.</div>
   </div>
 
@@ -1301,6 +1542,15 @@ footer {
           </div>
           <div class="collapsible-body" id="body-produtos-salvos">
             <div style="height:10px;"></div>
+            <div style="display:flex;gap:8px;margin-bottom:8px;align-items:center;">
+              <select id="produto-ordem" onchange="renderProdutos()" style="flex:1;height:34px;background:var(--raised);border:1.5px solid var(--line2);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;font-size:12px;padding:0 8px;outline:none;">
+                <option value="cadastro">Ordem de cadastro</option>
+                <option value="nome">Nome A-Z</option>
+                <option value="custo_asc">Menor custo</option>
+                <option value="custo_desc">Maior custo</option>
+                <option value="lucro_desc">Maior lucro</option>
+              </select>
+            </div>
             <div style="position:relative;margin-bottom:10px;">
               <input type="text" id="produto-busca"
                 placeholder="Buscar produto..."
@@ -1516,6 +1766,7 @@ function switchTab(tab) {
   if(tab==='vendas')   { populateMesFilter('f-mes'); renderVendas(); }
   if(tab==='dash')     { populateMesFilter('d-mes'); renderDash(); }
   if(tab==='produtos') { renderProdutos(); }
+  if(tab==='dash') { atualizarMeta(); }
 }
 function goCalc() { switchTab('calc'); }
 
@@ -1818,7 +2069,8 @@ function renderProdutos() {
   const se = document.getElementById('kit-selecao-empty');
   if (se) se.style.display = 'none';
 
-  produtos.forEach(p => {
+  const produtosOrdenados = getProdutosOrdenados();
+  produtosOrdenados.forEach(p => {
     // Card na lista
     const card = document.createElement('div');
     card.className = 'produto-card';
@@ -1835,7 +2087,10 @@ function renderProdutos() {
           &nbsp;|&nbsp; Lucro ML: <span style="color:var(--green);">+${fmt(lucroML)}</span>
         </div>
       </div>
-      <div class="produto-actions">
+      <div class="produto-actions" style="display:flex;gap:4px;flex-direction:column;">
+        <button class="del-btn" onclick="editarProduto(${p.id})" title="Editar" style="color:var(--neon);font-size:13px;">✏️</button>
+        <button class="del-btn" onclick="duplicarProduto(${p.id})" title="Duplicar" style="color:var(--amber);font-size:13px;">⧉</button>
+        <button class="del-btn" onclick="gerarOrcamento(${p.id})" title="Orçamento WhatsApp" style="color:#25d366;font-size:13px;">💬</button>
         <button class="del-btn" onclick="deleteProduto(${p.id})" title="Remover">✕</button>
       </div>`;
     lista.appendChild(card);
@@ -2159,6 +2414,186 @@ function importBackup(event) {
   event.target.value = '';
 }
 
+
+// ─── TEMA CLARO/ESCURO ────────────────────────────────────
+function toggleTheme() {
+  const isLight = document.body.classList.toggle('light-mode');
+  localStorage.setItem('p3d_theme', isLight ? 'light' : 'dark');
+  document.querySelector('.theme-toggle').textContent = isLight ? '☀️' : '🌙';
+}
+function initTheme() {
+  const t = localStorage.getItem('p3d_theme');
+  if (t === 'light') {
+    document.body.classList.add('light-mode');
+    document.querySelector('.theme-toggle').textContent = '☀️';
+  }
+}
+
+// ─── VOLTAR AO TOPO ───────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('back-top');
+  if (btn) btn.classList.toggle('visible', window.scrollY > 300);
+});
+
+// ─── ORDENAÇÃO ────────────────────────────────────────────
+function getProdutosOrdenados() {
+  const ordem = document.getElementById('produto-ordem')?.value || 'cadastro';
+  const lista = [...produtos];
+  const tShopee = parseFloat(document.getElementById('taxaShopee')?.value) || 0;
+  const fShopee = parseFloat(document.getElementById('taxaShopeeR')?.value) || 0;
+  const getPrecoCliente = p => p.precoCliente || p.custo * 2;
+  const getLucro = p => getPrecoCliente(p) - (p.custo || 0);
+  switch(ordem) {
+    case 'nome':       return lista.sort((a,b) => a.nome.localeCompare(b.nome));
+    case 'custo_asc':  return lista.sort((a,b) => (a.custo||0) - (b.custo||0));
+    case 'custo_desc': return lista.sort((a,b) => (b.custo||0) - (a.custo||0));
+    case 'lucro_desc': return lista.sort((a,b) => getLucro(b) - getLucro(a));
+    default:           return lista;
+  }
+}
+
+// ─── EDITAR PRODUTO ───────────────────────────────────────
+function editarProduto(id) {
+  const p = produtos.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('edit-id').value    = id;
+  document.getElementById('edit-nome').value  = p.nome;
+  document.getElementById('edit-custo').value = String(p.custo).replace('.', ',');
+  document.getElementById('edit-markup').value = p.precoCliente && p.custo ? (p.precoCliente / p.custo).toFixed(2) : '2';
+  calcEditPreview();
+  document.getElementById('modal-editar').style.display = 'flex';
+}
+
+function fecharModalEditar() {
+  document.getElementById('modal-editar').style.display = 'none';
+}
+
+function calcEditPreview() {
+  const custo  = parseBR(document.getElementById('edit-custo').value);
+  const markup = parseBR(document.getElementById('edit-markup').value) || 2;
+  const tShopee = parseFloat(document.getElementById('taxaShopee')?.value) || 0;
+  const fShopee = parseFloat(document.getElementById('taxaShopeeR')?.value) || 0;
+  const tML     = parseFloat(document.getElementById('taxaML')?.value) || 0;
+  const fML     = parseFloat(document.getElementById('taxaMLR')?.value) || 0;
+  if (custo <= 0) return;
+  const base   = custo * markup;
+  const shopee = tShopee > 0 ? (base + fShopee) / (1 - tShopee/100) : base;
+  const ml     = tML > 0     ? (base + fML)     / (1 - tML/100)     : base;
+  document.getElementById('edit-prev-cliente').textContent = fmt(base);
+  document.getElementById('edit-prev-shopee').textContent  = fmt(shopee);
+  document.getElementById('edit-prev-ml').textContent      = fmt(ml);
+}
+
+function salvarEdicaoProduto() {
+  const id     = parseInt(document.getElementById('edit-id').value);
+  const nome   = document.getElementById('edit-nome').value.trim();
+  const custo  = parseBR(document.getElementById('edit-custo').value);
+  const markup = parseBR(document.getElementById('edit-markup').value) || 2;
+  if (!nome || custo <= 0) { alert('Preencha nome e custo.'); return; }
+  const tShopee = parseFloat(document.getElementById('taxaShopee')?.value) || 0;
+  const fShopee = parseFloat(document.getElementById('taxaShopeeR')?.value) || 0;
+  const tML     = parseFloat(document.getElementById('taxaML')?.value) || 0;
+  const fML     = parseFloat(document.getElementById('taxaMLR')?.value) || 0;
+  const base    = custo * markup;
+  const shopee  = tShopee > 0 ? (base + fShopee) / (1 - tShopee/100) : base;
+  const ml      = tML > 0     ? (base + fML)     / (1 - tML/100)     : base;
+  const idx = produtos.findIndex(x => x.id === id);
+  if (idx > -1) {
+    produtos[idx] = { ...produtos[idx], nome, custo, precoCliente: base, precoShopee: shopee, precoML: ml };
+    saveProdutos();
+    renderProdutos();
+  }
+  fecharModalEditar();
+}
+
+// ─── DUPLICAR PRODUTO ─────────────────────────────────────
+function duplicarProduto(id) {
+  const p = produtos.find(x => x.id === id);
+  if (!p) return;
+  const clone = { ...p, id: Date.now(), nome: p.nome + ' (cópia)' };
+  produtos.push(clone);
+  saveProdutos();
+  renderProdutos();
+  const fb = document.getElementById('prod-feedback');
+  if (fb) { fb.style.color='var(--amber)'; fb.textContent='⧉ "'+p.nome+'" duplicado!'; setTimeout(()=>fb.textContent='',3000); }
+}
+
+// ─── ORÇAMENTO WHATSAPP ───────────────────────────────────
+function gerarOrcamento(id) {
+  const p = produtos.find(x => x.id === id);
+  if (!p) return;
+  const msg =
+    `🧮 *Orçamento — Precifica 3D*\n\n` +
+    `📦 *Produto:* ${p.nome}\n\n` +
+    `💰 *Preços:*\n` +
+    `• Cliente Direto: *${fmt(p.precoCliente)}*\n` +
+    `• Shopee: *${fmt(p.precoShopee)}*\n` +
+    `• Mercado Livre: *${fmt(p.precoML)}*\n\n` +
+    `📊 *Custo de produção:* ${fmt(p.custo)}\n` +
+    `✅ *Lucro estimado (direto):* ${fmt(p.precoCliente - p.custo)}`;
+  const encoded = encodeURIComponent(msg);
+  window.open('https://wa.me/?text=' + encoded, '_blank');
+}
+
+// ─── META MENSAL ──────────────────────────────────────────
+function salvarMeta() {
+  const val = parseBR(document.getElementById('meta-valor').value);
+  if (val <= 0) { alert('Informe um valor de meta válido.'); return; }
+  localStorage.setItem('p3d_meta', val);
+  atualizarMeta();
+}
+
+function atualizarMeta() {
+  const meta = parseFloat(localStorage.getItem('p3d_meta')) || 0;
+  const mesAtual = new Date().toISOString().slice(0, 7);
+  const fat = vendas
+    .filter(v => v.data && v.data.slice(0, 7) === mesAtual)
+    .reduce((s, v) => s + (v.val || 0) * (v.qtd || 1), 0);
+
+  const pct = meta > 0 ? Math.min(100, Math.round(fat / meta * 100)) : 0;
+  const fill  = document.getElementById('meta-fill');
+  const pctEl = document.getElementById('meta-pct-text');
+  const fatEl = document.getElementById('meta-fat-atual');
+  const faltEl= document.getElementById('meta-faltam');
+
+  if (fill)  fill.style.width = pct + '%';
+  if (pctEl) pctEl.textContent = pct + '%';
+  if (fatEl) fatEl.textContent = 'Faturamento: ' + fmt(fat);
+  if (faltEl) {
+    if (meta > 0) {
+      const faltam = Math.max(0, meta - fat);
+      faltEl.textContent = faltam > 0 ? 'Faltam: ' + fmt(faltam) : '🎉 Meta atingida!';
+    } else {
+      faltEl.textContent = 'Meta: não definida';
+    }
+  }
+  // Restaurar valor da meta no campo
+  const metaEl = document.getElementById('meta-valor');
+  if (metaEl && meta > 0) metaEl.placeholder = 'Meta: R$ ' + fmt(meta);
+
+  // Produto mais lucrativo
+  atualizarDestaque();
+}
+
+function atualizarDestaque() {
+  if (!produtos.length) { const d = document.getElementById('destaque-card'); if(d) d.style.display='none'; return; }
+  const maisLucrativo = produtos.reduce((best, p) => {
+    const lucro = (p.precoCliente||0) - (p.custo||0);
+    const bestLucro = (best.precoCliente||0) - (best.custo||0);
+    return lucro > bestLucro ? p : best;
+  });
+  const card = document.getElementById('destaque-card');
+  const nome = document.getElementById('destaque-nome');
+  const sub  = document.getElementById('destaque-sub');
+  if (card) card.style.display = 'flex';
+  if (nome) nome.textContent = maisLucrativo.nome;
+  if (sub) {
+    const lucro = (maisLucrativo.precoCliente||0) - (maisLucrativo.custo||0);
+    const margem = maisLucrativo.precoCliente > 0 ? (lucro / maisLucrativo.precoCliente * 100).toFixed(1) : 0;
+    sub.textContent = 'Lucro: ' + fmt(lucro) + ' · Margem: ' + margem + '%';
+  }
+}
+
 // ─── COLLAPSE ─────────────────────────────────────────
 function toggleCollapse(id) {
   const body   = document.getElementById('body-' + id);
@@ -2195,6 +2630,10 @@ CONFIG_FIELDS.forEach(id => {
 
 // Verificar licença ao carregar
 verificarLicenca();
+// Inicializar tema
+initTheme();
+// Atualizar meta
+atualizarMeta();
 </script>
 </body>
 </html>
