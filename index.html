@@ -901,6 +901,36 @@ footer {
   margin-left: auto;
   letter-spacing: -0.5px;
 }
+
+/* ── COLLAPSE ── */
+.collapsible-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.collapse-icon {
+  font-size: 16px;
+  color: var(--neon);
+  transition: transform .25s;
+  flex-shrink: 0;
+}
+.collapsible-header.collapsed .collapse-icon {
+  transform: rotate(-90deg);
+}
+.collapsible-body {
+  overflow: hidden;
+  transition: max-height .3s ease, opacity .3s ease;
+  max-height: 2000px;
+  opacity: 1;
+}
+.collapsible-body.collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+
 </style>
 </head>
 <body>
@@ -1265,20 +1295,26 @@ footer {
 
         <!-- LISTA -->
         <div class="panel">
-          <div class="panel-title">📦 Produtos Salvos</div>
-          <div style="position:relative;margin-bottom:10px;">
-            <input type="text" id="produto-busca"
-              placeholder="🔍  Buscar produto..."
-              oninput="filtrarProdutos()"
-              style="width:100%;background:var(--raised);border:1.5px solid var(--line2);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:9px 14px 9px 36px;outline:none;transition:border-color .15s;"
-              onfocus="this.style.borderColor='var(--neon)'" onblur="this.style.borderColor='var(--line2)'">
-            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--hint);pointer-events:none;">🔍</span>
+          <div class="collapsible-header" onclick="toggleCollapse('produtos-salvos')">
+            <div class="panel-title" style="margin:0;border:none;padding:0;">📦 Produtos Salvos</div>
+            <span class="collapse-icon" id="icon-produtos-salvos">▾</span>
           </div>
-          <div id="produto-busca-nenhum" style="display:none;text-align:center;padding:1rem;font-size:13px;color:var(--hint);">Nenhum produto encontrado.</div>
-          <div id="produtos-lista"></div>
-          <div id="produtos-empty" class="empty-state" style="padding:1.5rem 0;">
-            <div class="empty-icon" style="font-size:28px;">📦</div>
-            Nenhum produto cadastrado ainda.<br>Preencha o formulário acima.
+          <div class="collapsible-body" id="body-produtos-salvos">
+            <div style="height:10px;"></div>
+            <div style="position:relative;margin-bottom:10px;">
+              <input type="text" id="produto-busca"
+                placeholder="Buscar produto..."
+                oninput="filtrarProdutos()"
+                style="width:100%;background:var(--raised);border:1.5px solid var(--line2);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:9px 14px 9px 36px;outline:none;transition:border-color .15s;"
+                onfocus="this.style.borderColor='var(--neon)'" onblur="this.style.borderColor='var(--line2)'">
+              <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--hint);pointer-events:none;">🔍</span>
+            </div>
+            <div id="produto-busca-nenhum" style="display:none;text-align:center;padding:1rem;font-size:13px;color:var(--hint);">Nenhum produto encontrado.</div>
+            <div id="produtos-lista"></div>
+            <div id="produtos-empty" class="empty-state" style="padding:1.5rem 0;">
+              <div class="empty-icon" style="font-size:28px;">📦</div>
+              Nenhum produto cadastrado ainda.<br>Preencha o formulário acima.
+            </div>
           </div>
         </div>
       </div>
@@ -1286,18 +1322,23 @@ footer {
       <!-- MONTAGEM DE KIT -->
       <div>
         <div class="panel">
-          <div class="panel-title">🔧 Montar Kit</div>
-          <div class="field-group">
-            <label>Nome do Kit</label>
-            <input type="text" id="kit-nome" placeholder="Ex: Combo Monster">
+          <div class="collapsible-header" onclick="toggleCollapse('montar-kit')">
+            <div class="panel-title" style="margin:0;border:none;padding:0;">🔧 Montar Kit</div>
+            <span class="collapse-icon" id="icon-montar-kit">▾</span>
           </div>
-
-          <div style="margin-bottom:10px;">
-            <label style="margin-bottom:6px;">Selecionar Peças</label>
-            <div id="kit-selecao" style="max-height:220px;overflow-y:auto;border:1px solid var(--line);border-radius:var(--radius-sm);padding:4px 0;">
-              <div id="kit-selecao-empty" style="font-size:12px;color:var(--hint);padding:12px;text-align:center;">Nenhum produto cadastrado ainda.</div>
+          <div class="collapsible-body" id="body-montar-kit">
+            <div style="height:10px;"></div>
+            <div class="field-group">
+              <label>Nome do Kit</label>
+              <input type="text" id="kit-nome" placeholder="Ex: Combo Monster">
             </div>
-          </div>
+
+            <div style="margin-bottom:10px;">
+              <label style="margin-bottom:6px;">Selecionar Peças</label>
+              <div id="kit-selecao" style="max-height:220px;overflow-y:auto;border:1px solid var(--line);border-radius:var(--radius-sm);padding:4px 0;">
+                <div id="kit-selecao-empty" style="font-size:12px;color:var(--hint);padding:12px;text-align:center;">Nenhum produto cadastrado ainda.</div>
+              </div>
+            </div>
 
           <div class="field-group">
             <label>Markup do Kit</label>
@@ -2116,6 +2157,18 @@ function importBackup(event) {
   };
   reader.readAsText(file);
   event.target.value = '';
+}
+
+// ─── COLLAPSE ─────────────────────────────────────────
+function toggleCollapse(id) {
+  const body   = document.getElementById('body-' + id);
+  const header = body?.previousElementSibling;
+  const icon   = document.getElementById('icon-' + id);
+  if (!body) return;
+  const isCollapsed = body.classList.contains('collapsed');
+  body.classList.toggle('collapsed', !isCollapsed);
+  if (header) header.classList.toggle('collapsed', !isCollapsed);
+  if (icon)   icon.textContent = isCollapsed ? '▾' : '▴';
 }
 
 // ─── INIT ─────────────────────────────────────────────
