@@ -1235,7 +1235,7 @@ footer {
           <div class="grid-2" style="gap:8px;">
             <div class="field-group">
               <label>Custo Total (R$)</label>
-              <input type="number" id="prod-custo" placeholder="0,00" step="0.01" min="0" oninput="calcProdManual()">
+              <input type="text" id="prod-custo" placeholder="Ex: 27,96" inputmode="decimal" oninput="calcProdManual()">
             </div>
             <div class="field-group">
               <label>Markup ×</label>
@@ -1619,9 +1619,14 @@ function salvarDaCalc() {
   alert('✓ "' + nome + '" salvo nos Produtos!');
 }
 
+function parseBR(val) {
+  // Aceita tanto 27,96 quanto 27.96
+  return parseFloat(String(val).replace(',', '.')) || 0;
+}
+
 function calcProdManual() {
-  const custo  = parseFloat(document.getElementById('prod-custo').value) || 0;
-  const markup = parseFloat(document.getElementById('prod-markup').value) || 2;
+  const custo  = parseBR(document.getElementById('prod-custo').value);
+  const markup = parseBR(document.getElementById('prod-markup').value) || 2;
   const tShopee = parseFloat(document.getElementById('taxaShopee').value) || 0;
   const fShopee = parseFloat(document.getElementById('taxaShopeeR').value) || 0;
   const tML     = parseFloat(document.getElementById('taxaML').value) || 0;
@@ -1642,8 +1647,8 @@ function calcProdManual() {
 
 function salvarProdutoManual() {
   const nome   = document.getElementById('prod-nome').value.trim();
-  const custo  = parseFloat(document.getElementById('prod-custo').value) || 0;
-  const markup = parseFloat(document.getElementById('prod-markup').value) || 2;
+  const custo  = parseBR(document.getElementById('prod-custo').value);
+  const markup = parseBR(document.getElementById('prod-markup').value) || 2;
   const fb     = document.getElementById('prod-feedback');
 
   if (!nome)   { fb.style.color='var(--red)'; fb.textContent='⚠ Informe o nome do produto.'; return; }
