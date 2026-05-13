@@ -1266,6 +1266,15 @@ footer {
         <!-- LISTA -->
         <div class="panel">
           <div class="panel-title">📦 Produtos Salvos</div>
+          <div style="position:relative;margin-bottom:10px;">
+            <input type="text" id="produto-busca"
+              placeholder="🔍  Buscar produto..."
+              oninput="filtrarProdutos()"
+              style="width:100%;background:var(--raised);border:1.5px solid var(--line2);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:9px 14px 9px 36px;outline:none;transition:border-color .15s;"
+              onfocus="this.style.borderColor='var(--neon)'" onblur="this.style.borderColor='var(--line2)'">
+            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--hint);pointer-events:none;">🔍</span>
+          </div>
+          <div id="produto-busca-nenhum" style="display:none;text-align:center;padding:1rem;font-size:13px;color:var(--hint);">Nenhum produto encontrado.</div>
           <div id="produtos-lista"></div>
           <div id="produtos-empty" class="empty-state" style="padding:1.5rem 0;">
             <div class="empty-icon" style="font-size:28px;">📦</div>
@@ -1717,6 +1726,25 @@ function deleteProduto(id) {
   renderProdutos();
 }
 
+function filtrarProdutos() {
+  const termo = (document.getElementById('produto-busca')?.value || '').toLowerCase().trim();
+  const cards = document.querySelectorAll('#produtos-lista .produto-card');
+  const nenhum = document.getElementById('produto-busca-nenhum');
+  let visiveis = 0;
+
+  cards.forEach(card => {
+    const nome = card.querySelector('.produto-nome')?.textContent?.toLowerCase() || '';
+    if (!termo || nome.includes(termo)) {
+      card.style.display = '';
+      visiveis++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  if (nenhum) nenhum.style.display = (visiveis === 0 && cards.length > 0) ? 'block' : 'none';
+}
+
 function renderProdutos() {
   const lista  = document.getElementById('produtos-lista');
   const empty  = document.getElementById('produtos-empty');
@@ -1724,8 +1752,12 @@ function renderProdutos() {
 
   if (!lista) return;
 
-  // Limpar lista
+  // Limpar lista e busca
   lista.innerHTML = '';
+  const buscaEl = document.getElementById('produto-busca');
+  if (buscaEl) buscaEl.value = '';
+  const nenhum = document.getElementById('produto-busca-nenhum');
+  if (nenhum) nenhum.style.display = 'none';
 
   // Limpar só os labels do kit (não destrói o empty)
   if (selDiv) {
