@@ -1956,8 +1956,13 @@ function calc() {
   const tempo = v('tempoH') + v('tempoM')/60;
   const enrg  = (v('potencia')/1000)*tempo*v('kwh');
   const adic  = totalAdicionais();
-  const direto= fil+enrg+v('embalagem')+v('frete')+adic;
-  const indir = direto*fixoD;
+  const embal = v('embalagem');
+  const frete = v('frete');
+
+  // Custo de PRODUÇÃO: filamento + energia + adicionais (sujeito a indireto e markup)
+  // Embalagem e frete são custos de REPASSE — somados APÓS o markup, sem indireto
+  const producao = fil + enrg + adic;
+  const indir    = producao * fixoD;
 
   let pintura = 0;
   if(paintMode!=='none'){
@@ -1966,17 +1971,24 @@ function calc() {
     pintura = v('tinta')+pC+vC+paintHours[paintMode]*v('custoHora');
   }
 
-  const total  = (direto+indir+pintura)*(1+v('falhas')/100);
-  // Markup: preço = custo × fator | Margem: preço = custo / (1 - margem%)
-  const base = total === 0 ? 0 : precMode === 'markup'
-    ? total * v('markup')
-    : total / (1 - Math.min(v('margem'), 99) / 100);
+  // Total de produção (com falhas e indireto)
+  const totalProd = (producao + indir + pintura) * (1 + v('falhas')/100);
+  // Custo total real = produção + embalagem + frete
+  const total = totalProd + embal + frete;
+
+  // Markup/Margem aplicado APENAS sobre o custo de produção
+  // Embalagem e frete entram no preço final pelo valor real (repasse)
+  const baseProd = totalProd === 0 ? 0 : precMode === 'markup'
+    ? totalProd * v('markup')
+    : totalProd / (1 - Math.min(v('margem'), 99) / 100);
+  const base = baseProd + embal + frete;
+
   const txS    = v('taxaShopee')/100, txSR = v('taxaShopeeR');
   const txM    = v('taxaML')/100,     txMR = v('taxaMLR');
   const pShop  = base === 0 ? 0 : Math.ceil((base+txSR)/(1-txS));
   const pML    = base === 0 ? 0 : Math.ceil((base+txMR)/(1-txM));
 
-  set('r-custoDireto',      fmt(direto));
+  set('r-custoDireto',      fmt(producao));
   set('r-custoTotal',       fmt(total));
   set('r-custoPintura',     fmt(pintura));
   set('r-custo-total-prod', fmt(total));
@@ -2001,7 +2013,7 @@ function calc() {
   calcConfig();
 
   // Guardar para aba vendas
-  window._lastCalc = { produto: tx('nomeProduto')||'Produto', custo: total, precoCliente: base, precoShopee: pShop, precoML: pML };
+  window._lastCalc = { produto: tx('nomeProduto')||'Produto', custo: total, precoCliente: base, precoShopee: pShop, precoML: pML, totalProd, embal, frete };
 }
 
 // ─── ADICIONAIS ──────────────────────────────────────
