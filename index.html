@@ -1319,11 +1319,22 @@ body.light-mode {
         </div>
         <div class="panel">
           <div class="panel-title">$ Taxas de Plataforma</div>
-          <div class="grid-2" style="margin-bottom:0;">
+          <div style="font-size:10px;color:var(--sub);margin-bottom:10px;line-height:1.6;">Configure as taxas de cada plataforma. Os campos de Frete Grátis e Cupom representam custos absorvidos por você.</div>
+          <div class="grid-2" style="margin-bottom:8px;">
             <div class="field-group"><label>Shopee (%)</label><input type="number" id="taxaShopee" value="0" step="0.5" min="0"></div>
             <div class="field-group"><label>Shopee Fixo (R$)</label><input type="number" id="taxaShopeeR" value="0" step="0.5" min="0"></div>
             <div class="field-group"><label>Mercado Livre (%)</label><input type="number" id="taxaML" value="0" step="0.5" min="0"></div>
             <div class="field-group"><label>ML Fixo (R$)</label><input type="number" id="taxaMLR" value="0" step="0.5" min="0"></div>
+          </div>
+          <div style="font-size:10px;font-weight:700;color:var(--neon);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">🚚 Shopee — Custos Extras</div>
+          <div class="grid-2" style="margin-bottom:8px;">
+            <div class="field-group"><label>Frete Grátis Absorvido (R$)</label><input type="number" id="shopeeFreteGratis" value="0" step="0.5" min="0"><div style="font-size:10px;color:var(--hint);margin-top:3px;">Valor médio de frete que você paga por pedido em campanhas</div></div>
+            <div class="field-group"><label>Cupom/Desconto Absorvido (%)</label><input type="number" id="shopeeCupom" value="0" step="0.5" min="0" max="50"><div style="font-size:10px;color:var(--hint);margin-top:3px;">% do desconto que a Shopee cobra do vendedor em campanhas</div></div>
+          </div>
+          <div class="field-group" style="margin-bottom:0;">
+            <label>Taxa de Devolução Shopee (%)</label>
+            <input type="number" id="shopeeDevol" value="0" step="0.5" min="0" max="30">
+            <div style="font-size:10px;color:var(--hint);margin-top:3px;">% estimado de pedidos devolvidos (gera custo de reimpressão)</div>
           </div>
         </div>
       </div>
@@ -1376,6 +1387,14 @@ body.light-mode {
           </div>
         </div>
         <div class="field-group"><label>Peso do Filamento (gramas)</label><input type="number" id="peso" value="0" step="1" min="0"></div>
+        <div class="field-group">
+          <label>Suporte/Desperdício (gramas) <span style="font-size:10px;color:var(--hint);font-weight:400;">— filamento usado mas não vira produto</span></label>
+          <input type="number" id="pesoSuporteG" value="0" step="1" min="0">
+        </div>
+        <div class="field-group">
+          <label>Pós-Processamento (min) <span style="font-size:10px;color:var(--hint);font-weight:400;">— remoção suporte, lixamento, montagem</span></label>
+          <input type="number" id="tempoPosProcM" value="0" step="5" min="0">
+        </div>
         <div class="field-group"><label>Embalagem (R$)</label><input type="number" id="embalagem" value="0.00" step="0.01" min="0"></div>
         <div class="field-group"><label>Frete (R$, 0 = grátis)</label><input type="number" id="frete" value="0" step="1" min="0"></div>
 
@@ -1443,6 +1462,15 @@ body.light-mode {
           <div class="panel-title">▣ Detalhamento</div>
           <div class="result-card"><div class="result-label">Custo Total do Produto</div><div class="result-value v-amber" id="r-custo-total-prod">—</div></div>
           <div class="result-card"><div class="result-label">Lucro (R$)</div><div class="result-value v-neon" id="r-lucro">—</div></div>
+          <div class="result-card" id="r-suporte-card" style="display:none;"><div class="result-label">Custo Suporte/Desperdício</div><div class="result-value v-amber" id="r-custo-suporte">—</div></div>
+          <div class="result-card" id="r-pos-card" style="display:none;"><div class="result-label">MO Pós-Processamento</div><div class="result-value v-amber" id="r-custo-pos">—</div></div>
+          <div class="result-card" id="r-shopee-extras-card" style="display:none;background:rgba(255,106,0,.05);border-color:rgba(255,106,0,.2);">
+            <div class="result-label" style="color:var(--neon);">⚠ Extras Shopee incluídos</div>
+            <div style="font-size:11px;color:var(--sub);margin-top:4px;display:flex;flex-direction:column;gap:3px;">
+              <span>Frete Grátis absorvido: <strong id="r-shopee-frete-gratis" style="color:var(--text);">—</strong></span>
+              <span>Cupom absorvido: <strong id="r-shopee-cupom-pct" style="color:var(--text);">—</strong></span>
+            </div>
+          </div>
           <div class="result-card" style="margin-bottom:0;"><div class="result-label">Custo Indireto (fixo + amort.)</div><div class="result-value v-sky" id="r-custoIndireto">—</div></div>
         </div>
       </div>
@@ -1862,7 +1890,7 @@ const paintTintaDef = {simples:2,media:4,complexa:6};
 let vendas = JSON.parse(localStorage.getItem('p3d_vendas') || '[]');
 let produtos = JSON.parse(localStorage.getItem('p3d_produtos') || '[]');
 const saveProdutos = () => localStorage.setItem('p3d_produtos', JSON.stringify(produtos));
-const CONFIG_FIELDS = ['maquina','software','ecommerce','mei','publicidade','outrosfixo','faturamento','equip1','equip2','vidaUtil','potencia','kwh','kgFilamento','taxaShopee','taxaShopeeR','taxaML','taxaMLR','primerVal','primerQtd','vernizVal','vernizQtd','custoHora','falhas'];
+const CONFIG_FIELDS = ['maquina','software','ecommerce','mei','publicidade','outrosfixo','faturamento','equip1','equip2','vidaUtil','potencia','kwh','kgFilamento','taxaShopee','taxaShopeeR','taxaML','taxaMLR','shopeeFreteGratis','shopeeCupom','shopeeDevol','primerVal','primerQtd','vernizVal','vernizQtd','custoHora','falhas'];
 
 // ─── UTILS ───────────────────────────────────────────
 const fmt  = n => 'R$ ' + n.toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.');
@@ -1952,16 +1980,30 @@ function calc() {
   const fixoT = fixo+amort;
   const fixoD = fixoT/fat;
 
-  const fil   = (v('peso')/1000)*v('kgFilamento');
-  const tempo = v('tempoH') + v('tempoM')/60;
-  const enrg  = (v('potencia')/1000)*tempo*v('kwh');
+  // Filamento: peça + suporte/desperdício
+  const fil         = (v('peso')/1000) * v('kgFilamento');
+  const filSuporteG = v('pesoSuporteG') || 0;
+  const filSupporte = (filSuporteG/1000) * v('kgFilamento');
+
+  // Tempo: impressão + pós-processamento
+  const tempo       = v('tempoH') + v('tempoM')/60;
+  const tempoPos    = (v('tempoPosProcM') || 0) / 60;
+  const enrg        = (v('potencia')/1000) * tempo * v('kwh');
+
+  // Mão de obra pós-processamento (usa custo/hora da configuração)
+  const moPosProcH  = tempoPos * v('custoHora');
+
   const adic  = totalAdicionais();
   const embal = v('embalagem');
   const frete = v('frete');
 
-  // Custo de PRODUÇÃO: filamento + energia + adicionais (sujeito a indireto e markup)
-  // Embalagem e frete são custos de REPASSE — somados APÓS o markup, sem indireto
-  const producao = fil + enrg + adic;
+  // Shopee extras: frete grátis absorvido + cupom + devolução
+  const shopeeFreteGratis = v('shopeeFreteGratis') || 0;
+  const shopeeCupomPct    = v('shopeeCupom') / 100 || 0;
+  const shopeeDevol       = v('shopeeDevol') / 100 || 0;
+
+  // Custo de PRODUÇÃO: filamento (peça+suporte) + energia + MO pós + adicionais
+  const producao = fil + filSupporte + enrg + moPosProcH + adic;
   const indir    = producao * fixoD;
 
   let pintura = 0;
@@ -1985,10 +2027,35 @@ function calc() {
 
   const txS    = v('taxaShopee')/100, txSR = v('taxaShopeeR');
   const txM    = v('taxaML')/100,     txMR = v('taxaMLR');
-  const pShop  = base === 0 ? 0 : Math.ceil((base+txSR)/(1-txS));
+
+  // Shopee: taxa + fixo + frete grátis absorvido + cupom + devolução
+  // base já inclui embalagem e frete do cliente
+  const baseShopeeComExtras = base + shopeeFreteGratis;
+  const pShopBase = base === 0 ? 0 : (baseShopeeComExtras + txSR) / (1 - txS);
+  // Cupom: Shopee cobra % do desconto do vendedor
+  const pShopComCupom = shopeeCupomPct > 0 ? pShopBase / (1 - shopeeCupomPct) : pShopBase;
+  // Devolução: custo da peça devolvida distribuído no preço
+  const custoDevol = shopeeDevol > 0 ? totalProd * shopeeDevol : 0;
+  const pShop = base === 0 ? 0 : Math.ceil(pShopComCupom + custoDevol);
   const pML    = base === 0 ? 0 : Math.ceil((base+txMR)/(1-txM));
 
   set('r-custoDireto',      fmt(producao));
+  // Mostrar custo do suporte se houver
+  const suporteCard = document.getElementById('r-suporte-card');
+  if (suporteCard) suporteCard.style.display = filSuporteG > 0 ? 'block' : 'none';
+  set('r-custo-suporte', fmt(filSupporte));
+  // Mostrar MO pós-processamento se houver
+  const posCard = document.getElementById('r-pos-card');
+  if (posCard) posCard.style.display = tempoPos > 0 ? 'block' : 'none';
+  set('r-custo-pos', fmt(moPosProcH));
+  // Mostrar extras Shopee no detalhamento
+  const shopeeExtrasCard = document.getElementById('r-shopee-extras-card');
+  if (shopeeExtrasCard) {
+    const temExtras = shopeeFreteGratis > 0 || shopeeCupomPct > 0 || shopeeDevol > 0;
+    shopeeExtrasCard.style.display = temExtras ? 'block' : 'none';
+  }
+  set('r-shopee-frete-gratis', fmt(shopeeFreteGratis));
+  set('r-shopee-cupom-pct', (v('shopeeCupom')||0) + '%');
   set('r-custoTotal',       fmt(total));
   set('r-custoPintura',     fmt(pintura));
   set('r-custo-total-prod', fmt(total));
