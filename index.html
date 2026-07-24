@@ -1149,6 +1149,61 @@ body.light-mode {
 .rev-res { font-size: 11px; color: var(--sub); line-height: 1.7; }
 .rev-res strong { font-size: 13px; }
 
+
+/* ── VIABILIDADE ── */
+.viab {
+  border-radius: var(--radius);
+  padding: var(--pad);
+  margin-bottom: var(--gap);
+  border: 1.5px solid var(--line2);
+  background: var(--card);
+  transition: border-color .3s, background .3s;
+}
+.viab-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.viab-emoji { font-size: 38px; line-height: 1; flex-shrink: 0; }
+.viab-nome  { font-size: 22px; font-weight: 900; letter-spacing: -.5px; line-height: 1.1; }
+.viab-desc  { font-size: 11px; color: var(--sub); margin-top: 3px; line-height: 1.5; }
+.viab-hero  { margin-left: auto; text-align: right; flex-shrink: 0; }
+.viab-hero-val   { font-size: 26px; font-weight: 900; letter-spacing: -1px; line-height: 1; }
+.viab-hero-label { font-size: 9px; color: var(--sub); text-transform: uppercase; letter-spacing: .8px; margin-top: 3px; }
+.viab-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+@media (max-width: 640px) { .viab-grid { grid-template-columns: 1fr 1fr; } .viab-hero-val { font-size: 22px; } .viab-nome { font-size: 19px; } }
+.viab-kpi { background: var(--raised); border-radius: var(--radius-sm); padding: 9px 10px; }
+.viab-kpi-val   { font-size: 16px; font-weight: 800; line-height: 1.1; }
+.viab-kpi-label { font-size: 9px; color: var(--sub); text-transform: uppercase; letter-spacing: .5px; margin-top: 4px; line-height: 1.3; }
+.viab-alerts { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+.viab-alert {
+  font-size: 11px; font-weight: 600; line-height: 1.5;
+  padding: 8px 10px; border-radius: var(--radius-sm);
+  background: rgba(255,193,7,.08); border: 1px solid rgba(255,193,7,.2); color: #ffc107;
+}
+.viab-alert.crit { background: rgba(255,61,0,.08); border-color: rgba(255,61,0,.25); color: var(--red); }
+.viab-alert.good { background: rgba(61,220,132,.08); border-color: rgba(61,220,132,.2); color: var(--green); }
+/* níveis */
+.viab.n-excelente { border-color: #3ddc84; background: rgba(61,220,132,.06); }
+.viab.n-excelente .viab-nome, .viab.n-excelente .viab-hero-val { color: #3ddc84; }
+.viab.n-otimo { border-color: #8bc34a; background: rgba(139,195,74,.06); }
+.viab.n-otimo .viab-nome, .viab.n-otimo .viab-hero-val { color: #8bc34a; }
+.viab.n-bom { border-color: var(--neon); background: rgba(255,106,0,.06); }
+.viab.n-bom .viab-nome, .viab.n-bom .viab-hero-val { color: var(--neon); }
+.viab.n-fraco { border-color: #ffc107; background: rgba(255,193,7,.06); }
+.viab.n-fraco .viab-nome, .viab.n-fraco .viab-hero-val { color: #ffc107; }
+.viab.n-ruim { border-color: var(--red); background: rgba(255,61,0,.06); }
+.viab.n-ruim .viab-nome, .viab.n-ruim .viab-hero-val { color: var(--red); }
+.viab.n-vazio { opacity: .55; }
+.viab.n-vazio .viab-nome { color: var(--sub); }
+/* badge na lista de produtos */
+.p-badge {
+  display: inline-block; font-size: 9px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .5px;
+  padding: 2px 7px; border-radius: 100px; margin-left: 6px; vertical-align: middle;
+}
+.p-badge.n-excelente { background: rgba(61,220,132,.15); color: #3ddc84; }
+.p-badge.n-otimo     { background: rgba(139,195,74,.15); color: #8bc34a; }
+.p-badge.n-bom       { background: rgba(255,106,0,.15); color: var(--neon); }
+.p-badge.n-fraco     { background: rgba(255,193,7,.15); color: #ffc107; }
+.p-badge.n-ruim      { background: rgba(255,61,0,.15); color: var(--red); }
+
 </style>
 </head>
 <body>
@@ -1384,6 +1439,23 @@ body.light-mode {
       </div>
     </div>
     <div class="panel">
+      <div class="panel-title">🎯 Metas de Produção</div>
+      <div style="font-size:10px;color:var(--sub);margin-bottom:10px;line-height:1.6;">Base do índice de viabilidade. Com uma impressora só, a hora de máquina é seu recurso mais escasso.</div>
+      <div class="grid-2" style="margin-bottom:0;">
+        <div class="field-group" style="margin-bottom:0;">
+          <label>Meta de Lucro / hora de máquina (R$)</label>
+          <input type="number" id="metaLucroHora" value="10" step="1" min="1">
+          <div style="font-size:10px;color:var(--hint);margin-top:3px;">Quanto cada hora de impressora precisa render. Típico: R$ 8 a R$ 15</div>
+        </div>
+        <div class="field-group" style="margin-bottom:0;">
+          <label>Horas de Impressão por Dia</label>
+          <input type="number" id="horasDia" value="12" step="1" min="1" max="24">
+          <div style="font-size:10px;color:var(--hint);margin-top:3px;">Quantas horas por dia sua impressora realmente roda</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
       <div class="panel-title">👷 Mão de Obra &amp; Falhas</div>
       <div class="grid-2" style="margin-bottom:0;">
         <div class="field-group" style="margin-bottom:0;">
@@ -1535,6 +1607,27 @@ body.light-mode {
             <div id="paint-none-msg">Nenhuma pintura selecionada.</div>
           </div>
         </div>
+        <div class="viab n-vazio" id="viab-card">
+          <div class="viab-top">
+            <span class="viab-emoji" id="viab-emoji">⏳</span>
+            <div>
+              <div class="viab-nome" id="viab-nome">Aguardando dados</div>
+              <div class="viab-desc" id="viab-desc">Informe tempo, peso e custos para avaliar o produto.</div>
+            </div>
+            <div class="viab-hero">
+              <div class="viab-hero-val" id="viab-hero">—</div>
+              <div class="viab-hero-label">Lucro / hora de máquina</div>
+            </div>
+          </div>
+          <div class="viab-grid">
+            <div class="viab-kpi"><div class="viab-kpi-val v-neon"   id="viab-tempo">—</div><div class="viab-kpi-label">Máquina por peça</div></div>
+            <div class="viab-kpi"><div class="viab-kpi-val v-purple" id="viab-margem">—</div><div class="viab-kpi-label">Margem líquida</div></div>
+            <div class="viab-kpi"><div class="viab-kpi-val v-sky"    id="viab-capac">—</div><div class="viab-kpi-label">Peças por dia</div></div>
+            <div class="viab-kpi"><div class="viab-kpi-val v-amber"  id="viab-mes">—</div><div class="viab-kpi-label">Potencial / mês</div></div>
+          </div>
+          <div class="viab-alerts" id="viab-alerts"></div>
+        </div>
+
         <div class="big-results">
           <div class="big-results-title">▲ Preços Finais</div>
           <div class="warning" id="loss-warning">⚠ Cuidado: possível prejuízo!</div>
@@ -2022,7 +2115,7 @@ const paintTintaDef = {simples:2,media:4,complexa:6};
 let vendas = JSON.parse(localStorage.getItem('p3d_vendas') || '[]');
 let produtos = JSON.parse(localStorage.getItem('p3d_produtos') || '[]');
 const saveProdutos = () => localStorage.setItem('p3d_produtos', JSON.stringify(produtos));
-const CONFIG_FIELDS = ['maquina','software','ecommerce','mei','publicidade','outrosfixo','faturamento','equip1','equip2','vidaUtil','potencia','kwh','kgFilamento','taxaShopee','taxaShopeeR','taxaML','taxaMLR','shopeeFreteGratis','shopeeCupom','shopeeDevol','perdaCarretel','custoMaquinaH','tempoSetupM','primerVal','primerQtd','vernizVal','vernizQtd','custoHora','falhas'];
+const CONFIG_FIELDS = ['maquina','software','ecommerce','mei','publicidade','outrosfixo','faturamento','equip1','equip2','vidaUtil','potencia','kwh','kgFilamento','taxaShopee','taxaShopeeR','taxaML','taxaMLR','shopeeFreteGratis','shopeeCupom','shopeeDevol','perdaCarretel','custoMaquinaH','tempoSetupM','metaLucroHora','horasDia','primerVal','primerQtd','vernizVal','vernizQtd','custoHora','falhas'];
 
 // ─── UTILS ───────────────────────────────────────────
 const fmt  = n => 'R$ ' + n.toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.');
@@ -2210,6 +2303,82 @@ function calcReverso() {
   });
 }
 
+
+// ─── ÍNDICE DE VIABILIDADE ────────────────────────────────
+const NIVEIS = [
+  { min: 1.5,  id: 'excelente', nome: 'EXCELENTE', emoji: '🚀', desc: 'Produto campeão. Rende bem acima da sua meta por hora de máquina — priorize este.' },
+  { min: 1.0,  id: 'otimo',     nome: 'ÓTIMO',     emoji: '💎', desc: 'Bate a meta de lucro por hora. Vale subir na plataforma e anunciar.' },
+  { min: 0.6,  id: 'bom',       nome: 'BOM',       emoji: '👍', desc: 'Rende, mas abaixo da meta. Funciona como complemento, não como carro-chefe.' },
+  { min: 0.3,  id: 'fraco',     nome: 'FRACO',     emoji: '⚠️', desc: 'Ocupa muita máquina para o que devolve. Só compensa se vender em volume alto.' },
+  { min: -1e9, id: 'ruim',      nome: 'RUIM',      emoji: '🛑', desc: 'Não compensa produzir. A impressora rende mais com quase qualquer outro produto.' }
+];
+
+function nivelPorRatio(ratio, lucro) {
+  if (lucro <= 0) return NIVEIS[4];
+  return NIVEIS.find(n => ratio >= n.min);
+}
+
+function renderViabilidade() {
+  const c    = window._ctx;
+  const card = document.getElementById('viab-card');
+  if (!card) return;
+
+  const setTxt = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
+  const alerts = document.getElementById('viab-alerts');
+
+  // Sem dados suficientes
+  if (!c || c.totalProd <= 0 || c.horasMaqPeca <= 0) {
+    card.className = 'viab n-vazio';
+    setTxt('viab-emoji', '⏳');
+    setTxt('viab-nome', 'Aguardando dados');
+    setTxt('viab-desc', 'Informe tempo de impressão, peso e custos para avaliar o produto.');
+    ['viab-hero','viab-tempo','viab-margem','viab-capac','viab-mes'].forEach(i => setTxt(i, '—'));
+    if (alerts) alerts.innerHTML = '';
+    return;
+  }
+
+  const meta      = v('metaLucroHora') || 10;
+  const horasDia  = Math.min(v('horasDia') || 12, 24);
+  const lucro     = c.base - c.total;
+  const lucroHora = lucro / c.horasMaqPeca;
+  const ratio     = lucroHora / meta;
+  const margem    = c.base > 0 ? (lucro / c.base) * 100 : 0;
+  const pecasDia  = horasDia / c.horasMaqPeca;
+  const lucroMes  = pecasDia * lucro * 30;
+  const n         = nivelPorRatio(ratio, lucro);
+
+  card.className = 'viab n-' + n.id;
+  setTxt('viab-emoji', n.emoji);
+  setTxt('viab-nome',  n.nome);
+  setTxt('viab-desc',  n.desc);
+  setTxt('viab-hero',  fmt(lucroHora) + '/h');
+
+  const h = Math.floor(c.horasMaqPeca);
+  const m = Math.round((c.horasMaqPeca - h) * 60);
+  setTxt('viab-tempo',  h > 0 ? `${h}h${m > 0 ? ' ' + m + 'min' : ''}` : `${m}min`);
+  setTxt('viab-margem', margem.toFixed(1).replace('.', ',') + '%');
+  setTxt('viab-capac',  pecasDia >= 10 ? Math.floor(pecasDia) : pecasDia.toFixed(1).replace('.', ','));
+  setTxt('viab-mes',    fmt(lucroMes));
+
+  // Alertas contextuais
+  const av = [];
+  if (lucro <= 0)
+    av.push(['crit', '🛑 <strong>Prejuízo.</strong> O preço de venda não cobre o custo total. Aumente o markup ou reduza custos antes de anunciar.']);
+  else {
+    if (margem < 15)
+      av.push(['', `⚠️ <strong>Margem apertada (${margem.toFixed(0)}%).</strong> Qualquer imprevisto — devolução, reimpressão, alta do filamento — vira prejuízo.`]);
+    if (c.horasMaqPeca > 20)
+      av.push(['crit', `🛑 <strong>Trava a impressora por ${Math.round(c.horasMaqPeca)}h.</strong> Quase um dia inteiro em uma peça. Com uma máquina só, isso bloqueia todos os outros pedidos.`]);
+    else if (c.horasMaqPeca > 8)
+      av.push(['', `⏱️ <strong>Ocupa ${Math.round(c.horasMaqPeca)}h de máquina.</strong> Evite anunciar com prazo curto — você produz no máximo ${pecasDia.toFixed(1).replace('.', ',')} por dia.`]);
+    if (ratio >= 1.5)
+      av.push(['good', `🚀 <strong>Rende ${(ratio).toFixed(1).replace('.', ',')}× a sua meta.</strong> Vale investir em anúncio e manter estoque deste produto.`]);
+    if (c.qtd === 1 && c.horasMaqPeca > 0 && c.horasMaqPeca < 2)
+      av.push(['', '💡 <strong>Peça rápida.</strong> Preencha a mesa com várias unidades e informe a quantidade — o custo por peça cai bastante.']);
+  }
+  if (alerts) alerts.innerHTML = av.map(([cls, txt]) => `<div class="viab-alert ${cls}">${txt}</div>`).join('');
+}
+
 function calc() {
   const fixo  = v('maquina')+v('software')+v('ecommerce')+v('mei')+v('publicidade')+v('outrosfixo');
   const fat   = v('faturamento')||1;
@@ -2337,13 +2506,15 @@ function calc() {
   calcConfig();
 
   // Guardar para aba vendas
-  window._lastCalc = { produto: tx('nomeProduto')||'Produto', custo: total, precoCliente: base, precoShopee: pShop, precoML: pML, totalProd, embal, frete };
+  window._lastCalc = { produto: tx('nomeProduto')||'Produto', custo: total, precoCliente: base, precoShopee: pShop, precoML: pML, totalProd, embal, frete, horasMaq: (tempoMesa + setupMesa) / qtd };
 
   // Contexto para simulador e preço reverso
   window._ctx = { totalProd, total, embal, frete, txS, txSR, txM, txMR,
-                  fg: shopeeFreteGratis, cup: shopeeCupomPct, devol: shopeeDevol };
+                  fg: shopeeFreteGratis, cup: shopeeCupomPct, devol: shopeeDevol,
+                  horasMaqPeca: (tempoMesa + setupMesa) / qtd, base, qtd };
   renderSimulador();
   calcReverso();
+  renderViabilidade();
 }
 
 // ─── ADICIONAIS ──────────────────────────────────────
@@ -2398,7 +2569,8 @@ function salvarDaCalc() {
     custo: c.custo,
     precoCliente: c.precoCliente,
     precoShopee:  c.precoShopee,
-    precoML:      c.precoML
+    precoML:      c.precoML,
+    horasMaq:     c.horasMaq || 0
   });
   saveProdutos();
   renderProdutos();
@@ -2532,12 +2704,18 @@ function renderProdutos() {
     // Card na lista
     const card = document.createElement('div');
     card.className = 'produto-card';
+    let badge = '';
+    if (p.horasMaq > 0) {
+      const lh = ((p.precoCliente||0) - (p.custo||0)) / p.horasMaq;
+      const nv = nivelPorRatio(lh / (v('metaLucroHora') || 10), (p.precoCliente||0) - (p.custo||0));
+      badge = `<span class="p-badge n-${nv.id}" title="${fmt(lh)}/h de máquina">${nv.nome}</span>`;
+    }
     const lucroCliente = (p.precoCliente||0) - (p.custo||0);
     const lucroShopee  = (p.precoShopee||0)  - (p.custo||0);
     const lucroML      = (p.precoML||0)      - (p.custo||0);
     card.innerHTML = `
       <div class="produto-info">
-        <div class="produto-nome" title="${p.nome}">${p.nome}</div>
+        <div class="produto-nome" title="${p.nome}">${p.nome}${badge}</div>
         <div class="produto-custo">Custo: <span>${fmt(p.custo)}</span> &nbsp;|&nbsp; Cliente: <span>${fmt(p.precoCliente)}</span> &nbsp;|&nbsp; Shopee: <span>${fmt(p.precoShopee)}</span></div>
         <div class="produto-custo" style="margin-top:4px;">
           Lucro Direto: <span style="color:var(--green);">+${fmt(lucroCliente)}</span>
