@@ -1125,6 +1125,30 @@ body.light-mode {
 .kit-saved-preco { font-size: 12px; color: var(--neon); font-weight: 800; flex-shrink: 0; }
 .kit-saved-actions { display: flex; gap: 4px; flex-shrink: 0; }
 
+
+/* ── SIMULADOR ── */
+.sim-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.sim-table th {
+  font-size: 10px; font-weight: 800; color: var(--sub);
+  text-transform: uppercase; letter-spacing: .5px;
+  padding: 6px 4px; text-align: right; border-bottom: 1px solid var(--line);
+}
+.sim-table th:first-child { text-align: left; }
+.sim-table td { padding: 7px 4px; text-align: right; border-bottom: 1px solid var(--line); font-weight: 700; }
+.sim-table td:first-child { text-align: left; color: var(--neon); font-weight: 800; }
+.sim-table tr:last-child td { border-bottom: none; }
+.sim-table tr.sim-atual { background: rgba(255,106,0,.08); }
+.sim-table tr.sim-atual td:first-child::after { content: ' ←'; color: var(--neon); }
+.sim-lucro { color: var(--green) !important; }
+.sim-neg   { color: var(--red) !important; }
+.rev-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+@media (max-width: 640px) { .rev-grid { grid-template-columns: 1fr; } }
+.rev-box { background: var(--raised); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 10px; }
+.rev-box-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+.rev-box input { height: 34px; font-size: 14px; margin-bottom: 6px; }
+.rev-res { font-size: 11px; color: var(--sub); line-height: 1.7; }
+.rev-res strong { font-size: 13px; }
+
 </style>
 </head>
 <body>
@@ -1360,23 +1384,42 @@ body.light-mode {
       </div>
     </div>
     <div class="panel">
-      <div class="panel-title">◉ Referências de Pintura &amp; Custos</div>
-      <div class="grid-3">
-        <div class="field-group"><label>Valor Spray Primer (R$)</label><input type="number" id="primerVal" value="0" step="1" min="0"></div>
-        <div class="field-group"><label>Peças por Spray Primer</label><input type="number" id="primerQtd" value="0" step="1" min="1"></div>
-        <div class="field-group"><label>Custo Primer / Peça</label><div class="result-card" style="margin:0;"><div class="result-value v-amber" id="c-primer" style="font-size:18px;">—</div></div></div>
-        <div class="field-group"><label>Valor Spray Verniz (R$)</label><input type="number" id="vernizVal" value="0" step="1" min="0"></div>
-        <div class="field-group"><label>Peças por Spray Verniz</label><input type="number" id="vernizQtd" value="0" step="1" min="1"></div>
-        <div class="field-group"><label>Custo Verniz / Peça</label><div class="result-card" style="margin:0;"><div class="result-value v-amber" id="c-verniz" style="font-size:18px;">—</div></div></div>
+      <div class="panel-title">👷 Mão de Obra &amp; Falhas</div>
+      <div class="grid-2" style="margin-bottom:0;">
+        <div class="field-group" style="margin-bottom:0;">
+          <label>Custo / hora Mão de Obra (R$)</label>
+          <input type="number" id="custoHora" value="0" step="1" min="0">
+          <div style="font-size:10px;color:var(--hint);margin-top:3px;">Quanto você quer ganhar por hora trabalhada. Usado no setup e pós-processamento.</div>
+        </div>
+        <div class="field-group" style="margin-bottom:0;">
+          <label>Percentual de Falhas de Impressão (%)</label>
+          <input type="number" id="falhas" value="0" step="1" min="0" max="50">
+          <div style="font-size:10px;color:var(--hint);margin-top:3px;">% de impressões que falham e precisam refazer. Típico: 5 a 10%</div>
+        </div>
       </div>
-      <div class="grid-2">
-        <div class="field-group"><label>Custo / hora Mão de Obra (R$)</label><input type="number" id="custoHora" value="0" step="1" min="0"></div>
-        <div class="field-group"><label>Percentual de Falhas de Impressão (%)</label><input type="number" id="falhas" value="0" step="1" min="0" max="50"></div>
+    </div>
+
+    <div class="panel">
+      <div class="collapsible-header" onclick="toggleCollapse('cfg-pintura')">
+        <div class="panel-title" style="margin:0;border:none;padding:0;">🎨 Pintura <span style="color:var(--hint);font-weight:600;text-transform:none;letter-spacing:0;">— opcional</span></div>
+        <span class="collapse-icon" id="icon-cfg-pintura">▴</span>
       </div>
-      <div class="grid-3" style="margin-bottom:0;">
-        <div class="result-card" style="margin:0;"><div class="result-label">Pintura Simples — 1h</div><div class="result-value v-neon" id="c-pSimples">—</div></div>
-        <div class="result-card" style="margin:0;"><div class="result-label">Pintura Média — 4h</div><div class="result-value v-neon" id="c-pMedia">—</div></div>
-        <div class="result-card" style="margin:0;"><div class="result-label">Pintura Complexa — 5h</div><div class="result-value v-neon" id="c-pComplexa">—</div></div>
+      <div class="collapsible-body collapsed" id="body-cfg-pintura">
+        <div style="height:12px;"></div>
+        <div style="font-size:11px;color:var(--sub);margin-bottom:12px;line-height:1.6;">Só preencha se você pinta as peças. Se não pinta, pode ignorar esta seção inteira.</div>
+        <div class="grid-3">
+          <div class="field-group"><label>Valor Spray Primer (R$)</label><input type="number" id="primerVal" value="0" step="1" min="0"></div>
+          <div class="field-group"><label>Peças por Spray Primer</label><input type="number" id="primerQtd" value="0" step="1" min="1"></div>
+          <div class="field-group"><label>Custo Primer / Peça</label><div class="result-card" style="margin:0;"><div class="result-value v-amber" id="c-primer" style="font-size:18px;">—</div></div></div>
+          <div class="field-group"><label>Valor Spray Verniz (R$)</label><input type="number" id="vernizVal" value="0" step="1" min="0"></div>
+          <div class="field-group"><label>Peças por Spray Verniz</label><input type="number" id="vernizQtd" value="0" step="1" min="1"></div>
+          <div class="field-group"><label>Custo Verniz / Peça</label><div class="result-card" style="margin:0;"><div class="result-value v-amber" id="c-verniz" style="font-size:18px;">—</div></div></div>
+        </div>
+        <div class="grid-3" style="margin-bottom:0;">
+          <div class="result-card" style="margin:0;"><div class="result-label">Pintura Simples — 1h</div><div class="result-value v-neon" id="c-pSimples">—</div></div>
+          <div class="result-card" style="margin:0;"><div class="result-label">Pintura Média — 4h</div><div class="result-value v-neon" id="c-pMedia">—</div></div>
+          <div class="result-card" style="margin:0;"><div class="result-label">Pintura Complexa — 5h</div><div class="result-value v-neon" id="c-pComplexa">—</div></div>
+        </div>
       </div>
     </div>
     <button class="go-btn" onclick="goCalc()">Ir para Calcular Produto →</button>
@@ -1473,18 +1516,24 @@ body.light-mode {
       </div>
       <div>
         <div class="panel">
-          <div class="panel-title">◉ Pintura do Produto</div>
-          <div class="toggle-group">
-            <button class="tog active" id="paint-none"     onclick="setPaint('none')">Sem Pintura</button>
-            <button class="tog"        id="paint-simples"  onclick="setPaint('simples')">Simples</button>
-            <button class="tog"        id="paint-media"    onclick="setPaint('media')">Média</button>
-            <button class="tog"        id="paint-complexa" onclick="setPaint('complexa')">Complexa</button>
+          <div class="collapsible-header" onclick="toggleCollapse('calc-pintura')">
+            <div class="panel-title" style="margin:0;border:none;padding:0;">🎨 Pintura <span style="color:var(--hint);font-weight:600;text-transform:none;letter-spacing:0;" id="paint-status">— sem pintura</span></div>
+            <span class="collapse-icon" id="icon-calc-pintura">▴</span>
           </div>
-          <div id="paint-fields">
-            <div class="field-group"><label>Tinta Acrílica (R$)</label><input type="number" id="tinta" value="0" step="0.5" min="0"></div>
-            <div class="result-card" style="margin-bottom:0;"><div class="result-label">Custo de Pintura</div><div class="result-value v-amber" id="r-custoPintura">—</div></div>
+          <div class="collapsible-body collapsed" id="body-calc-pintura">
+            <div style="height:12px;"></div>
+            <div class="toggle-group">
+              <button class="tog active" id="paint-none"     onclick="setPaint('none')">Sem Pintura</button>
+              <button class="tog"        id="paint-simples"  onclick="setPaint('simples')">Simples</button>
+              <button class="tog"        id="paint-media"    onclick="setPaint('media')">Média</button>
+              <button class="tog"        id="paint-complexa" onclick="setPaint('complexa')">Complexa</button>
+            </div>
+            <div id="paint-fields">
+              <div class="field-group"><label>Tinta Acrílica (R$)</label><input type="number" id="tinta" value="0" step="0.5" min="0"></div>
+              <div class="result-card" style="margin-bottom:0;"><div class="result-label">Custo de Pintura</div><div class="result-value v-amber" id="r-custoPintura">—</div></div>
+            </div>
+            <div id="paint-none-msg">Nenhuma pintura selecionada.</div>
           </div>
-          <div id="paint-none-msg">Nenhuma pintura selecionada.</div>
         </div>
         <div class="big-results">
           <div class="big-results-title">▲ Preços Finais</div>
@@ -1493,6 +1542,49 @@ body.light-mode {
           <div class="price-row"><span class="price-badge badge-shopee">Shopee</span><div class="price-right"><span class="price-badge badge-tag" id="r-shopee-pct">—</span><span class="price-val v-amber" id="r-precoShopee">—</span></div></div>
           <div class="price-row"><span class="price-badge badge-ml">Mercado Livre</span><div class="price-right"><span class="price-badge badge-tag" id="r-ml-pct">—</span><span class="price-val v-sky" id="r-precoML">—</span></div></div>
         </div>
+        <div class="panel">
+          <div class="collapsible-header" onclick="toggleCollapse('simulador')">
+            <div class="panel-title" style="margin:0;border:none;padding:0;">📊 Simulador de Markup</div>
+            <span class="collapse-icon" id="icon-simulador">▾</span>
+          </div>
+          <div class="collapsible-body" id="body-simulador">
+            <div style="height:10px;"></div>
+            <div style="font-size:11px;color:var(--sub);margin-bottom:10px;line-height:1.6;">Compare o preço e o lucro em cada markup. A linha marcada é a que você está usando.</div>
+            <table class="sim-table">
+              <thead><tr><th>Markup</th><th>Direto</th><th>Shopee</th><th>ML</th><th>Lucro</th></tr></thead>
+              <tbody id="sim-body"><tr><td colspan="5" style="text-align:center;color:var(--hint);font-weight:400;padding:12px;">Preencha os dados do produto.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="collapsible-header" onclick="toggleCollapse('reverso')">
+            <div class="panel-title" style="margin:0;border:none;padding:0;">🎯 Preço-Alvo Reverso</div>
+            <span class="collapse-icon" id="icon-reverso">▾</span>
+          </div>
+          <div class="collapsible-body" id="body-reverso">
+            <div style="height:10px;"></div>
+            <div style="font-size:11px;color:var(--sub);margin-bottom:10px;line-height:1.6;">Viu o preço do concorrente? Digite aqui e descubra o lucro real que sobra para você.</div>
+            <div class="rev-grid">
+              <div class="rev-box">
+                <div class="rev-box-label" style="color:var(--neon);">Cliente Direto</div>
+                <input type="text" id="rev-cliente" inputmode="decimal" placeholder="R$ 0,00" oninput="calcReverso()">
+                <div class="rev-res" id="rev-cliente-res">—</div>
+              </div>
+              <div class="rev-box">
+                <div class="rev-box-label" style="color:var(--amber);">Shopee</div>
+                <input type="text" id="rev-shopee" inputmode="decimal" placeholder="R$ 0,00" oninput="calcReverso()">
+                <div class="rev-res" id="rev-shopee-res">—</div>
+              </div>
+              <div class="rev-box">
+                <div class="rev-box-label" style="color:var(--sky);">Mercado Livre</div>
+                <input type="text" id="rev-ml" inputmode="decimal" placeholder="R$ 0,00" oninput="calcReverso()">
+                <div class="rev-res" id="rev-ml-res">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="panel" style="margin-bottom:0;">
           <div class="panel-title">▣ Detalhamento</div>
           <div class="result-card"><div class="result-label">Custo Total do Produto</div><div class="result-value v-amber" id="r-custo-total-prod">—</div></div>
@@ -1994,6 +2086,12 @@ function setPaint(mode) {
   document.getElementById('paint-fields').style.display   = mode==='none'?'none':'block';
   document.getElementById('paint-none-msg').style.display = mode==='none'?'block':'none';
   if(mode!=='none') document.getElementById('tinta').value = paintTintaDef[mode]||2;
+  const st = document.getElementById('paint-status');
+  if (st) {
+    const nomes = {none:'— sem pintura', simples:'— simples', media:'— média', complexa:'— complexa'};
+    st.textContent = nomes[mode];
+    st.style.color = mode === 'none' ? 'var(--hint)' : 'var(--neon)';
+  }
   calc();
 }
 
@@ -2041,6 +2139,75 @@ function aplicarArredondamento(valor) {
   const inteiro  = Math.floor(valor);
   const alvo     = inteiro + centavos;
   return valor <= alvo ? alvo : inteiro + 1 + centavos;
+}
+
+
+// ─── SIMULADOR DE MARKUP ──────────────────────────────────
+const SIM_MARKUPS = [1.8, 2, 2.5, 3, 3.5, 4];
+
+function precosDoMarkup(mk) {
+  const c = window._ctx; if (!c) return null;
+  const baseProd = c.totalProd * mk;
+  const base     = aplicarArredondamento(baseProd + c.embal + c.frete);
+  const pShopRaw = (base + c.fg + c.txSR) / (1 - c.txS);
+  const pShopCup = c.cup > 0 ? pShopRaw / (1 - c.cup) : pShopRaw;
+  const pShop    = aplicarArredondamento(pShopCup + (c.devol > 0 ? c.totalProd * c.devol : 0));
+  const pML      = aplicarArredondamento((base + c.txMR) / (1 - c.txM));
+  return { base, pShop, pML, lucro: base - c.total };
+}
+
+function renderSimulador() {
+  const tb = document.getElementById('sim-body');
+  const c  = window._ctx;
+  if (!tb) return;
+  if (!c || c.totalProd <= 0) {
+    tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--hint);font-weight:400;padding:12px;">Preencha os dados do produto.</td></tr>';
+    return;
+  }
+  const atual = precMode === 'markup' ? v('markup') : null;
+  tb.innerHTML = SIM_MARKUPS.map(mk => {
+    const p = precosDoMarkup(mk);
+    const eh = atual !== null && Math.abs(atual - mk) < 0.05;
+    const cls = p.lucro >= 0 ? 'sim-lucro' : 'sim-neg';
+    return `<tr class="${eh ? 'sim-atual' : ''}">
+      <td>${mk.toFixed(1).replace('.', ',')}×</td>
+      <td>${fmt(p.base)}</td>
+      <td>${fmt(p.pShop)}</td>
+      <td>${fmt(p.pML)}</td>
+      <td class="${cls}">${fmt(p.lucro)}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── PREÇO-ALVO REVERSO ───────────────────────────────────
+function resultadoReverso(base) {
+  const c = window._ctx;
+  const lucro    = base - c.total;
+  const baseProd = base - c.embal - c.frete;
+  const mk       = c.totalProd > 0 ? baseProd / c.totalProd : 0;
+  const margem   = base > 0 ? (lucro / base) * 100 : 0;
+  const cor      = lucro >= 0 ? 'var(--green)' : 'var(--red)';
+  return `Lucro: <strong style="color:${cor};">${fmt(lucro)}</strong><br>`
+       + `Markup: <strong style="color:var(--text);">${mk.toFixed(2).replace('.', ',')}×</strong><br>`
+       + `Margem: <strong style="color:var(--text);">${margem.toFixed(1).replace('.', ',')}%</strong>`;
+}
+
+function calcReverso() {
+  const c = window._ctx;
+  const campos = [
+    ['rev-cliente', 'rev-cliente-res', p => p],
+    ['rev-shopee',  'rev-shopee-res',  p => (p - (c.devol > 0 ? c.totalProd * c.devol : 0)) * (1 - c.cup) * (1 - c.txS) - c.txSR - c.fg],
+    ['rev-ml',      'rev-ml-res',      p => p * (1 - c.txM) - c.txMR]
+  ];
+  campos.forEach(([inId, outId, paraBase]) => {
+    const inp = document.getElementById(inId);
+    const out = document.getElementById(outId);
+    if (!inp || !out) return;
+    const preco = parseBR(inp.value);
+    if (!c || c.totalProd <= 0) { out.innerHTML = 'Preencha o produto primeiro.'; return; }
+    if (preco <= 0) { out.innerHTML = '—'; return; }
+    out.innerHTML = resultadoReverso(paraBase(preco));
+  });
 }
 
 function calc() {
@@ -2171,6 +2338,12 @@ function calc() {
 
   // Guardar para aba vendas
   window._lastCalc = { produto: tx('nomeProduto')||'Produto', custo: total, precoCliente: base, precoShopee: pShop, precoML: pML, totalProd, embal, frete };
+
+  // Contexto para simulador e preço reverso
+  window._ctx = { totalProd, total, embal, frete, txS, txSR, txM, txMR,
+                  fg: shopeeFreteGratis, cup: shopeeCupomPct, devol: shopeeDevol };
+  renderSimulador();
+  calcReverso();
 }
 
 // ─── ADICIONAIS ──────────────────────────────────────
