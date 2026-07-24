@@ -24,8 +24,8 @@
   --sky:     #ff9a3c;
   --red:     #ff3d00;
   --text:    #f5f0eb;
-  --sub:     #7a6a5a;
-  --hint:    #4a3a2a;
+  --sub:     #a3907c;
+  --hint:    #7d6754;
 
   --radius-sm: 8px;
   --radius:    12px;
@@ -50,7 +50,7 @@ body {
 
 /* ── WRAPPER ── */
 .wrap {
-  max-width: 1020px;
+  max-width: 1180px;
   margin: 0 auto;
   background: var(--surface);
   min-height: 100vh;
@@ -157,6 +157,10 @@ body {
   .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
   --pad: 24px;
   --gap: 16px;
+}
+
+@media (min-width: 1100px) {
+  body { padding: 2rem 1.5rem; }
 }
 
 /* ── PANELS ── */
@@ -1204,6 +1208,56 @@ body.light-mode {
 .p-badge.n-fraco     { background: rgba(255,193,7,.15); color: #ffc107; }
 .p-badge.n-ruim      { background: rgba(255,61,0,.15); color: var(--red); }
 
+
+/* ═══ LEGIBILIDADE ═══ */
+.panel-title   { font-size: 12px; letter-spacing: 1.4px; }
+label          { font-size: 12px; letter-spacing: .3px; margin-bottom: 6px; }
+.result-label  { font-size: 11.5px; letter-spacing: .5px; }
+.result-value  { font-size: 22px; }
+.mini-label    { font-size: 11px; letter-spacing: .4px; }
+.mini-value    { font-size: 17px; }
+.kpi-label     { font-size: 11.5px; letter-spacing: .4px; }
+.plat-name     { font-size: 11.5px; }
+.plat-badge    { font-size: 11px; }
+.badge-tag     { font-size: 11px; }
+.big-results-title { font-size: 12px; letter-spacing: 1.4px; }
+#paint-none-msg    { font-size: 13.5px; }
+
+/* Viabilidade */
+.viab-nome       { font-size: 24px; }
+.viab-desc       { font-size: 12.5px; line-height: 1.6; margin-top: 5px; }
+.viab-emoji      { font-size: 42px; }
+.viab-hero-val   { font-size: 30px; }
+.viab-hero-label { font-size: 10.5px; letter-spacing: .6px; }
+.viab-kpi        { padding: 12px 12px; }
+.viab-kpi-val    { font-size: 19px; }
+.viab-kpi-label  { font-size: 11px; letter-spacing: .3px; margin-top: 5px; }
+.viab-alert      { font-size: 12.5px; padding: 10px 12px; }
+
+/* Simulador e reverso */
+.sim-table th   { font-size: 11px; padding: 8px 5px; }
+.sim-table td   { font-size: 13.5px; padding: 9px 5px; }
+.rev-box-label  { font-size: 11.5px; }
+.rev-res        { font-size: 12.5px; line-height: 1.8; }
+.rev-res strong { font-size: 14px; }
+.p-badge        { font-size: 10px; padding: 3px 8px; }
+
+/* Produtos e vendas */
+.produto-nome   { font-size: 15px; }
+.produto-custo  { font-size: 12.5px; line-height: 1.6; }
+.orc-header     { font-size: 11px; }
+.destaque-title { font-size: 11px; }
+.destaque-sub   { font-size: 13px; }
+.meta-label     { font-size: 12.5px; }
+.kit-saved-row  { font-size: 13.5px; padding: 10px 12px; }
+.kit-saved-preco{ font-size: 13px; }
+
+@media (min-width: 1100px) {
+  .viab-nome     { font-size: 26px; }
+  .viab-hero-val { font-size: 34px; }
+  .result-value  { font-size: 24px; }
+}
+
 </style>
 </head>
 <body>
@@ -1396,29 +1450,29 @@ body.light-mode {
           <div class="field-group"><label>Custo do KWh (R$)</label><input type="number" id="kwh" value="0" step="0.01" min="0"></div>
           <div class="field-group"><label>Preço do Kg de Filamento (R$)</label><input type="number" id="kgFilamento" value="0" step="1" min="0"></div>
           <div class="field-group">
-            <label>Perda de Carretel (%) <span style="font-size:10px;color:var(--hint);font-weight:400;">— sobra inutilizável</span></label>
+            <label>Perda de Carretel (%) <span style="font-size:12px;color:var(--sub);font-weight:400;">— sobra inutilizável</span></label>
             <input type="number" id="perdaCarretel" value="0" step="1" min="0" max="20">
-            <div style="font-size:10px;color:var(--hint);margin-top:3px;">Os últimos gramas que não dão pra usar. Encarece o kg real. Típico: 3 a 5%</div>
+            <div style="font-size:12px;color:var(--sub);margin-top:3px;">Os últimos gramas que não dão pra usar. Encarece o kg real. Típico: 3 a 5%</div>
           </div>
           <div class="result-card" style="margin-bottom:0;"><div class="result-label">Kg Real (com perda)</div><div class="result-value v-amber" id="c-kg-real">—</div></div>
         </div>
         <div class="panel">
           <div class="panel-title">🔧 Desgaste &amp; Manutenção</div>
-          <div style="font-size:10px;color:var(--sub);margin-bottom:10px;line-height:1.6;">Cada hora de impressão desgasta bico, placa, correias e ventoinhas. Some tudo e divida pelas horas de vida útil.</div>
+          <div style="font-size:12px;color:var(--sub);margin-bottom:10px;line-height:1.6;">Cada hora de impressão desgasta bico, placa, correias e ventoinhas. Some tudo e divida pelas horas de vida útil.</div>
           <div class="field-group">
             <label>Custo de Máquina / Hora (R$)</label>
             <input type="number" id="custoMaquinaH" value="0" step="0.1" min="0">
-            <div style="font-size:10px;color:var(--hint);margin-top:3px;">Típico: R$ 0,50 a R$ 2,00 por hora. Não inclui energia.</div>
+            <div style="font-size:12px;color:var(--sub);margin-top:3px;">Típico: R$ 0,50 a R$ 2,00 por hora. Não inclui energia.</div>
           </div>
           <div class="field-group" style="margin-bottom:0;">
             <label>Tempo de Setup por Impressão (min)</label>
             <input type="number" id="tempoSetupM" value="0" step="1" min="0">
-            <div style="font-size:10px;color:var(--hint);margin-top:3px;">Preparar mesa, iniciar, retirar peças. Dividido entre as peças da mesa.</div>
+            <div style="font-size:12px;color:var(--sub);margin-top:3px;">Preparar mesa, iniciar, retirar peças. Dividido entre as peças da mesa.</div>
           </div>
         </div>
         <div class="panel">
           <div class="panel-title">$ Taxas de Plataforma</div>
-          <div style="font-size:10px;color:var(--sub);margin-bottom:10px;line-height:1.6;">Configure as taxas de cada plataforma. Os campos de Frete Grátis e Cupom representam custos absorvidos por você.</div>
+          <div style="font-size:12px;color:var(--sub);margin-bottom:10px;line-height:1.6;">Configure as taxas de cada plataforma. Os campos de Frete Grátis e Cupom representam custos absorvidos por você.</div>
           <div class="grid-2" style="margin-bottom:8px;">
             <div class="field-group"><label>Shopee (%)</label><input type="number" id="taxaShopee" value="0" step="0.5" min="0"></div>
             <div class="field-group"><label>Shopee Fixo (R$)</label><input type="number" id="taxaShopeeR" value="0" step="0.5" min="0"></div>
@@ -1427,30 +1481,30 @@ body.light-mode {
           </div>
           <div style="font-size:10px;font-weight:700;color:var(--neon);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">🚚 Shopee — Custos Extras</div>
           <div class="grid-2" style="margin-bottom:8px;">
-            <div class="field-group"><label>Frete Grátis Absorvido (R$)</label><input type="number" id="shopeeFreteGratis" value="0" step="0.5" min="0"><div style="font-size:10px;color:var(--hint);margin-top:3px;">Valor médio de frete que você paga por pedido em campanhas</div></div>
-            <div class="field-group"><label>Cupom/Desconto Absorvido (%)</label><input type="number" id="shopeeCupom" value="0" step="0.5" min="0" max="50"><div style="font-size:10px;color:var(--hint);margin-top:3px;">% do desconto que a Shopee cobra do vendedor em campanhas</div></div>
+            <div class="field-group"><label>Frete Grátis Absorvido (R$)</label><input type="number" id="shopeeFreteGratis" value="0" step="0.5" min="0"><div style="font-size:12px;color:var(--sub);margin-top:3px;">Valor médio de frete que você paga por pedido em campanhas</div></div>
+            <div class="field-group"><label>Cupom/Desconto Absorvido (%)</label><input type="number" id="shopeeCupom" value="0" step="0.5" min="0" max="50"><div style="font-size:12px;color:var(--sub);margin-top:3px;">% do desconto que a Shopee cobra do vendedor em campanhas</div></div>
           </div>
           <div class="field-group" style="margin-bottom:0;">
             <label>Taxa de Devolução Shopee (%)</label>
             <input type="number" id="shopeeDevol" value="0" step="0.5" min="0" max="30">
-            <div style="font-size:10px;color:var(--hint);margin-top:3px;">% estimado de pedidos devolvidos (gera custo de reimpressão)</div>
+            <div style="font-size:12px;color:var(--sub);margin-top:3px;">% estimado de pedidos devolvidos (gera custo de reimpressão)</div>
           </div>
         </div>
       </div>
     </div>
     <div class="panel">
       <div class="panel-title">🎯 Metas de Produção</div>
-      <div style="font-size:10px;color:var(--sub);margin-bottom:10px;line-height:1.6;">Base do índice de viabilidade. Com uma impressora só, a hora de máquina é seu recurso mais escasso.</div>
+      <div style="font-size:12px;color:var(--sub);margin-bottom:10px;line-height:1.6;">Base do índice de viabilidade. Com uma impressora só, a hora de máquina é seu recurso mais escasso.</div>
       <div class="grid-2" style="margin-bottom:0;">
         <div class="field-group" style="margin-bottom:0;">
           <label>Meta de Lucro / hora de máquina (R$)</label>
           <input type="number" id="metaLucroHora" value="10" step="1" min="1">
-          <div style="font-size:10px;color:var(--hint);margin-top:3px;">Quanto cada hora de impressora precisa render. Típico: R$ 8 a R$ 15</div>
+          <div style="font-size:12px;color:var(--sub);margin-top:3px;">Quanto cada hora de impressora precisa render. Típico: R$ 8 a R$ 15</div>
         </div>
         <div class="field-group" style="margin-bottom:0;">
           <label>Horas de Impressão por Dia</label>
           <input type="number" id="horasDia" value="12" step="1" min="1" max="24">
-          <div style="font-size:10px;color:var(--hint);margin-top:3px;">Quantas horas por dia sua impressora realmente roda</div>
+          <div style="font-size:12px;color:var(--sub);margin-top:3px;">Quantas horas por dia sua impressora realmente roda</div>
         </div>
       </div>
     </div>
@@ -1461,12 +1515,12 @@ body.light-mode {
         <div class="field-group" style="margin-bottom:0;">
           <label>Custo / hora Mão de Obra (R$)</label>
           <input type="number" id="custoHora" value="0" step="1" min="0">
-          <div style="font-size:10px;color:var(--hint);margin-top:3px;">Quanto você quer ganhar por hora trabalhada. Usado no setup e pós-processamento.</div>
+          <div style="font-size:12px;color:var(--sub);margin-top:3px;">Quanto você quer ganhar por hora trabalhada. Usado no setup e pós-processamento.</div>
         </div>
         <div class="field-group" style="margin-bottom:0;">
           <label>Percentual de Falhas de Impressão (%)</label>
           <input type="number" id="falhas" value="0" step="1" min="0" max="50">
-          <div style="font-size:10px;color:var(--hint);margin-top:3px;">% de impressões que falham e precisam refazer. Típico: 5 a 10%</div>
+          <div style="font-size:12px;color:var(--sub);margin-top:3px;">% de impressões que falham e precisam refazer. Típico: 5 a 10%</div>
         </div>
       </div>
     </div>
@@ -1478,7 +1532,7 @@ body.light-mode {
       </div>
       <div class="collapsible-body collapsed" id="body-cfg-pintura">
         <div style="height:12px;"></div>
-        <div style="font-size:11px;color:var(--sub);margin-bottom:12px;line-height:1.6;">Só preencha se você pinta as peças. Se não pinta, pode ignorar esta seção inteira.</div>
+        <div style="font-size:12.5px;color:var(--sub);margin-bottom:12px;line-height:1.6;">Só preencha se você pinta as peças. Se não pinta, pode ignorar esta seção inteira.</div>
         <div class="grid-3">
           <div class="field-group"><label>Valor Spray Primer (R$)</label><input type="number" id="primerVal" value="0" step="1" min="0"></div>
           <div class="field-group"><label>Peças por Spray Primer</label><input type="number" id="primerQtd" value="0" step="1" min="1"></div>
@@ -1524,15 +1578,15 @@ body.light-mode {
         <div class="field-group" style="background:rgba(255,106,0,.05);border:1px solid rgba(255,106,0,.2);border-radius:var(--radius-sm);padding:10px 12px;">
           <label style="color:var(--neon);">🍽️ Peças nesta Mesa</label>
           <input type="number" id="qtdMesa" value="1" step="1" min="1" oninput="calc()">
-          <div style="font-size:10px;color:var(--sub);margin-top:5px;line-height:1.6;">Informe o <strong>tempo e peso TOTAIS</strong> da mesa (como aparece no fatiador). O app divide automaticamente por peça.</div>
+          <div style="font-size:12px;color:var(--sub);margin-top:5px;line-height:1.6;">Informe o <strong>tempo e peso TOTAIS</strong> da mesa (como aparece no fatiador). O app divide automaticamente por peça.</div>
         </div>
-        <div class="field-group"><label>Peso do Filamento (gramas) <span style="font-size:10px;color:var(--hint);font-weight:400;">— total da mesa</span></label><input type="number" id="peso" value="0" step="1" min="0"></div>
+        <div class="field-group"><label>Peso do Filamento (gramas) <span style="font-size:12px;color:var(--sub);font-weight:400;">— total da mesa</span></label><input type="number" id="peso" value="0" step="1" min="0"></div>
         <div class="field-group">
-          <label>Suporte/Desperdício (gramas) <span style="font-size:10px;color:var(--hint);font-weight:400;">— total da mesa</span></label>
+          <label>Suporte/Desperdício (gramas) <span style="font-size:12px;color:var(--sub);font-weight:400;">— total da mesa</span></label>
           <input type="number" id="pesoSuporteG" value="0" step="1" min="0">
         </div>
         <div class="field-group">
-          <label>Pós-Processamento (min) <span style="font-size:10px;color:var(--hint);font-weight:400;">— por peça</span></label>
+          <label>Pós-Processamento (min) <span style="font-size:12px;color:var(--sub);font-weight:400;">— por peça</span></label>
           <input type="number" id="tempoPosProcM" value="0" step="5" min="0">
         </div>
         <div class="field-group"><label>Embalagem (R$)</label><input type="number" id="embalagem" value="0.00" step="0.01" min="0"></div>
@@ -1555,7 +1609,7 @@ body.light-mode {
               <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:var(--sub);pointer-events:none;">%</span>
             </div>
           </div>
-          <div style="font-size:10px;color:var(--hint);margin-top:6px;" id="prec-hint">Usando Markup × — multiplica o custo total pelo fator.</div>
+          <div style="font-size:12px;color:var(--sub);margin-top:6px;" id="prec-hint">Usando Markup × — multiplica o custo total pelo fator.</div>
         </div>
 
         <div class="field-group">
@@ -1565,7 +1619,7 @@ body.light-mode {
             <button class="tog"        id="round-90"    onclick="setRound('90')">,90</button>
             <button class="tog"        id="round-99"    onclick="setRound('99')">,99</button>
           </div>
-          <div style="font-size:10px;color:var(--hint);margin-top:6px;" id="round-hint">Preço exato ao centavo, sem arredondar.</div>
+          <div style="font-size:12px;color:var(--sub);margin-top:6px;" id="round-hint">Preço exato ao centavo, sem arredondar.</div>
         </div>
 
         <!-- ADICIONAIS -->
@@ -1575,7 +1629,7 @@ body.light-mode {
             <button class="btn" onclick="addAdicional()" style="height:30px;font-size:11px;padding:0 10px;">＋ Adicionar</button>
           </div>
           <div id="adicionais-list"></div>
-          <div id="adicionais-empty" style="font-size:12px;color:var(--hint);padding:4px 0 2px;">Nenhum adicional. Ex: correntinha, base, caixinha...</div>
+          <div id="adicionais-empty" style="font-size:13px;color:var(--sub);padding:4px 0 2px;">Nenhum adicional. Ex: correntinha, base, caixinha...</div>
           <div class="result-card" id="adicionais-total-card" style="display:none;margin-top:8px;margin-bottom:0;">
             <div class="result-label">Total Adicionais</div>
             <div class="result-value v-pink" id="r-adicionais">R$ 0,00</div>
@@ -1642,7 +1696,7 @@ body.light-mode {
           </div>
           <div class="collapsible-body" id="body-simulador">
             <div style="height:10px;"></div>
-            <div style="font-size:11px;color:var(--sub);margin-bottom:10px;line-height:1.6;">Compare o preço e o lucro em cada markup. A linha marcada é a que você está usando.</div>
+            <div style="font-size:12.5px;color:var(--sub);margin-bottom:10px;line-height:1.6;">Compare o preço e o lucro em cada markup. A linha marcada é a que você está usando.</div>
             <table class="sim-table">
               <thead><tr><th>Markup</th><th>Direto</th><th>Shopee</th><th>ML</th><th>Lucro</th></tr></thead>
               <tbody id="sim-body"><tr><td colspan="5" style="text-align:center;color:var(--hint);font-weight:400;padding:12px;">Preencha os dados do produto.</td></tr></tbody>
@@ -1657,7 +1711,7 @@ body.light-mode {
           </div>
           <div class="collapsible-body" id="body-reverso">
             <div style="height:10px;"></div>
-            <div style="font-size:11px;color:var(--sub);margin-bottom:10px;line-height:1.6;">Viu o preço do concorrente? Digite aqui e descubra o lucro real que sobra para você.</div>
+            <div style="font-size:12.5px;color:var(--sub);margin-bottom:10px;line-height:1.6;">Viu o preço do concorrente? Digite aqui e descubra o lucro real que sobra para você.</div>
             <div class="rev-grid">
               <div class="rev-box">
                 <div class="rev-box-label" style="color:var(--neon);">Cliente Direto</div>
@@ -1684,14 +1738,14 @@ body.light-mode {
           <div class="result-card"><div class="result-label">Lucro (R$)</div><div class="result-value v-neon" id="r-lucro">—</div></div>
           <div class="result-card" id="r-mesa-card" style="display:none;background:rgba(255,106,0,.05);border-color:rgba(255,106,0,.2);">
             <div class="result-label" style="color:var(--neon);">🍽️ Impressão em Lote — <span id="r-mesa-qtd">—</span></div>
-            <div style="font-size:11px;color:var(--sub);margin-top:4px;">Custo total da mesa: <strong id="r-mesa-custo" style="color:var(--text);">—</strong></div>
+            <div style="font-size:12.5px;color:var(--sub);margin-top:4px;">Custo total da mesa: <strong id="r-mesa-custo" style="color:var(--text);">—</strong></div>
           </div>
           <div class="result-card" id="r-suporte-card" style="display:none;"><div class="result-label">Custo Suporte/Desperdício</div><div class="result-value v-amber" id="r-custo-suporte">—</div></div>
           <div class="result-card" id="r-maquina-card" style="display:none;"><div class="result-label">Desgaste de Máquina + Setup</div><div class="result-value v-amber" id="r-custo-maquina">—</div></div>
           <div class="result-card" id="r-pos-card" style="display:none;"><div class="result-label">MO Pós-Processamento</div><div class="result-value v-amber" id="r-custo-pos">—</div></div>
           <div class="result-card" id="r-shopee-extras-card" style="display:none;background:rgba(255,106,0,.05);border-color:rgba(255,106,0,.2);">
             <div class="result-label" style="color:var(--neon);">⚠ Extras Shopee incluídos</div>
-            <div style="font-size:11px;color:var(--sub);margin-top:4px;display:flex;flex-direction:column;gap:3px;">
+            <div style="font-size:12.5px;color:var(--sub);margin-top:4px;display:flex;flex-direction:column;gap:3px;">
               <span>Frete Grátis absorvido: <strong id="r-shopee-frete-gratis" style="color:var(--text);">—</strong></span>
               <span>Cupom absorvido: <strong id="r-shopee-cupom-pct" style="color:var(--text);">—</strong></span>
             </div>
@@ -1747,7 +1801,7 @@ body.light-mode {
           <button class="btn btn-red" onclick="limparVendas()">🗑</button>
         </div>
       </div>
-      <div style="font-size:11px;color:var(--hint);margin-bottom:10px;">CSV: produto, plataforma, qtd, valor_unit, custo_unit, data, obs</div>
+      <div style="font-size:12px;color:var(--sub);margin-bottom:10px;">CSV: produto, plataforma, qtd, valor_unit, custo_unit, data, obs</div>
       <div class="filter-row">
         <select id="f-plat" onchange="renderVendas()"><option value="">Todas as plataformas</option><option>Shopee</option><option>Mercado Livre</option><option>Direto</option></select>
         <select id="f-mes" onchange="renderVendas()"><option value="">Todos os meses</option></select>
@@ -1809,7 +1863,7 @@ body.light-mode {
       <div class="meta-track">
         <div class="meta-fill" id="meta-fill" style="width:0%;"></div>
       </div>
-      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-top:6px;">
+      <div style="display:flex;justify-content:space-between;font-size:12.5px;color:var(--sub);margin-top:6px;">
         <span id="meta-fat-atual">Faturamento: R$ 0</span>
         <span id="meta-faltam">Meta: não definida</span>
       </div>
@@ -1907,7 +1961,7 @@ body.light-mode {
                 onfocus="this.style.borderColor='var(--neon)'" onblur="this.style.borderColor='var(--line2)'">
               <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--hint);pointer-events:none;">🔍</span>
             </div>
-            <div id="produto-busca-nenhum" style="display:none;text-align:center;padding:1rem;font-size:13px;color:var(--hint);">Nenhum produto encontrado.</div>
+            <div id="produto-busca-nenhum" style="display:none;text-align:center;padding:1rem;font-size:13.5px;color:var(--sub);">Nenhum produto encontrado.</div>
             <div id="produtos-lista"></div>
             <div id="produtos-empty" class="empty-state" style="padding:1.5rem 0;">
               <div class="empty-icon" style="font-size:28px;">📦</div>
@@ -1934,7 +1988,7 @@ body.light-mode {
             <div style="margin-bottom:10px;">
               <label style="margin-bottom:6px;">Selecionar Peças</label>
               <div id="kit-selecao" style="max-height:220px;overflow-y:auto;border:1px solid var(--line);border-radius:var(--radius-sm);padding:4px 0;">
-                <div id="kit-selecao-empty" style="font-size:12px;color:var(--hint);padding:12px;text-align:center;">Nenhum produto cadastrado ainda.</div>
+                <div id="kit-selecao-empty" style="font-size:13px;color:var(--sub);padding:12px;text-align:center;">Nenhum produto cadastrado ainda.</div>
               </div>
             </div>
 
@@ -2007,7 +2061,7 @@ body.light-mode {
           <div class="collapsible-body" id="body-kits-salvos">
             <div style="height:8px;"></div>
             <div id="kits-lista"></div>
-            <div id="kits-empty" style="text-align:center;padding:1rem;font-size:13px;color:var(--hint);">Nenhum kit salvo ainda.</div>
+            <div id="kits-empty" style="text-align:center;padding:1rem;font-size:13.5px;color:var(--sub);">Nenhum kit salvo ainda.</div>
           </div>
         </div>
       </div>
@@ -2847,7 +2901,7 @@ function renderVendas() {
     const lucroCol  = lucro>=0?'var(--neon)':'var(--red)';
     tbody.innerHTML += `<tr>
       <td>${s.data.split('-').reverse().join('/')}</td>
-      <td>${s.prod}${s.obs?'<br><span style="font-size:11px;color:var(--hint);">'+s.obs+'</span>':''}</td>
+      <td>${s.prod}${s.obs?'<br><span style="font-size:12px;color:var(--sub);">'+s.obs+'</span>':''}</td>
       <td><span class="plat-badge ${platClass}">${s.plat}</span></td>
       <td style="font-weight:700;">${s.qtd}</td>
       <td>${fmt(s.val)}</td>
