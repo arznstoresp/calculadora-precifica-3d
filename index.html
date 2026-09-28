@@ -705,207 +705,6 @@ footer {
 }
 @media (min-width: 768px) { footer { padding-bottom: 24px; } }
 
-/* ── LICENÇA ── */
-/* ── LICENÇA ── */
-@keyframes licFadeIn {
-  from { opacity:0; transform: translateY(20px); }
-  to   { opacity:1; transform: translateY(0); }
-}
-@keyframes licGlow {
-  0%,100% { box-shadow: 0 0 40px rgba(255,106,0,.08); }
-  50%      { box-shadow: 0 0 80px rgba(255,106,0,.18); }
-}
-
-#license-screen {
-  position: fixed;
-  inset: 0;
-  background: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 1.5rem;
-  overflow: hidden;
-}
-
-#license-screen::before {
-  content: '';
-  position: absolute;
-  top: -200px; left: 50%; transform: translateX(-50%);
-  width: 700px; height: 600px;
-  background: radial-gradient(ellipse at 50% 0%, rgba(255,106,0,.1) 0%, transparent 65%);
-  pointer-events: none;
-}
-
-.license-box {
-  background: #111;
-  border: 1px solid #2a2a2a;
-  border-radius: 20px;
-  padding: 2.25rem 1.75rem;
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-  position: relative;
-  animation: licFadeIn .5s cubic-bezier(.4,0,.2,1) both, licGlow 4s ease-in-out infinite;
-  overflow: hidden;
-}
-
-.license-box::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,106,0,.5), transparent);
-}
-
-.license-logo {
-  font-family: 'Syne', sans-serif;
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--text);
-  margin-bottom: 4px;
-  letter-spacing: -1px;
-}
-.license-logo span { color: var(--neon); }
-
-.license-sub {
-  font-size: 10px;
-  color: #4a3a2a;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 2rem;
-}
-
-.license-divider {
-  border: none;
-  border-top: 1px solid #1e1e1e;
-  margin: 0 0 1.5rem;
-}
-
-.license-label {
-  font-size: 11px;
-  font-weight: 700;
-  color: #6a5a4a;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-bottom: 10px;
-}
-
-.license-input {
-  width: 100%;
-  background: #0d0d0d;
-  border: 1.5px solid #252525;
-  border-radius: 12px;
-  color: var(--text);
-  font-family: 'Inter', sans-serif;
-  font-size: 20px;
-  font-weight: 800;
-  padding: 14px 16px;
-  text-align: center;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  outline: none;
-  margin-bottom: 8px;
-  transition: border-color .2s, box-shadow .2s;
-}
-.license-input:focus {
-  border-color: var(--neon);
-  box-shadow: 0 0 0 3px rgba(255,106,0,.1);
-}
-.license-input::placeholder {
-  color: #2e2e2e;
-  letter-spacing: 3px;
-  font-size: 16px;
-}
-
-.license-error {
-  font-size: 12px;
-  color: var(--red);
-  font-weight: 700;
-  min-height: 20px;
-  margin-bottom: 10px;
-}
-
-.license-btn {
-  width: 100%;
-  height: 52px;
-  background: var(--neon);
-  border: none;
-  border-radius: 12px;
-  color: #000;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  cursor: pointer;
-  text-transform: uppercase;
-  transition: opacity .15s, transform .1s;
-  margin-bottom: 1.5rem;
-  position: relative;
-  overflow: hidden;
-}
-.license-btn::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 60%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
-  animation: btnShimmer 2.5s infinite;
-}
-@keyframes btnShimmer {
-  0%   { left: -100%; }
-  100% { left: 200%; }
-}
-.license-btn:active { opacity: .85; transform: scale(.98); }
-
-.license-footer {
-  border-top: 1px solid #1a1a1a;
-  padding-top: 1.25rem;
-}
-
-.license-footer-text {
-  font-size: 12px;
-  color: #4a3a2a;
-  line-height: 1.7;
-  margin-bottom: 12px;
-}
-
-.license-footer-cta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  background: rgba(255,106,0,.08);
-  border: 1px solid rgba(255,106,0,.2);
-  border-radius: 10px;
-  padding: 12px 16px;
-  text-decoration: none;
-  transition: background .15s, border-color .15s;
-}
-.license-footer-cta:active { background: rgba(255,106,0,.14); }
-
-.license-footer-cta-label {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
-.license-footer-cta-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--neon);
-}
-.license-footer-cta-sub {
-  font-size: 11px;
-  color: #6a5040;
-}
-.license-footer-cta-price {
-  font-size: 18px;
-  font-weight: 900;
-  color: var(--neon);
-  margin-left: auto;
-  letter-spacing: -0.5px;
-}
-
 /* ── COLLAPSE ── */
 .collapsible-header {
   display: flex;
@@ -1262,30 +1061,6 @@ label          { font-size: 12px; letter-spacing: .3px; margin-bottom: 6px; }
 </head>
 <body>
 
-<!-- TELA DE LICENÇA -->
-<div id="license-screen">
-  <div class="license-box">
-    <div class="license-logo"><span>Precifica</span> 3D</div>
-    <div class="license-sub">Gestão & Precificação para Makers</div>
-    <hr class="license-divider">
-    <div class="license-label">🔑 Sua chave de acesso</div>
-    <input class="license-input" id="license-input" type="text" maxlength="19" placeholder="XXXX-XXXX-XXXX-XXXX" oninput="formatLicenseInput(this)" onkeydown="if(event.key==='Enter') ativarLicenca()">
-    <div class="license-error" id="license-error"></div>
-    <button class="license-btn" onclick="ativarLicenca()">Ativar Agora →</button>
-    <div class="license-footer">
-      <div class="license-footer-text">Ainda não tem acesso? Garanta o seu agora.</div>
-      <a href="https://pay.kiwify.com.br/SKmanKq" target="_blank" class="license-footer-cta">
-        <span style="font-size:22px;">🧮</span>
-        <span class="license-footer-cta-label">
-          <span class="license-footer-cta-title">Precifica 3D</span>
-          <span class="license-footer-cta-sub">Acesso vitalício · paga uma vez</span>
-        </span>
-        <span class="license-footer-cta-price">R$&nbsp;27</span>
-      </a>
-    </div>
-  </div>
-</div>
-
 <!-- TEMA TOGGLE -->
 <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">🌙</button>
 <!-- VOLTAR AO TOPO -->
@@ -1484,6 +1259,11 @@ label          { font-size: 12px; letter-spacing: .3px; margin-bottom: 6px; }
             <div class="field-group"><label>Frete Grátis Absorvido (R$)</label><input type="number" id="shopeeFreteGratis" value="0" step="0.5" min="0"><div style="font-size:12px;color:var(--sub);margin-top:3px;">Valor médio de frete que você paga por pedido em campanhas</div></div>
             <div class="field-group"><label>Cupom/Desconto Absorvido (%)</label><input type="number" id="shopeeCupom" value="0" step="0.5" min="0" max="50"><div style="font-size:12px;color:var(--sub);margin-top:3px;">% do desconto que a Shopee cobra do vendedor em campanhas</div></div>
           </div>
+          <div class="field-group">
+            <label>Custo de Anúncio / Shopee Ads (%)</label>
+            <input type="number" id="shopeeAds" value="0" step="0.5" min="0" max="50">
+            <div style="font-size:12px;color:var(--sub);margin-top:3px;">ACOS — quanto do preço volta como investimento em anúncio</div>
+          </div>
           <div class="field-group" style="margin-bottom:0;">
             <label>Taxa de Devolução Shopee (%)</label>
             <input type="number" id="shopeeDevol" value="0" step="0.5" min="0" max="30">
@@ -1510,12 +1290,17 @@ label          { font-size: 12px; letter-spacing: .3px; margin-bottom: 6px; }
     </div>
 
     <div class="panel">
-      <div class="panel-title">👷 Mão de Obra &amp; Falhas</div>
-      <div class="grid-2" style="margin-bottom:0;">
+      <div class="panel-title">👷 Mão de Obra, Imposto &amp; Falhas</div>
+      <div class="grid-3" style="margin-bottom:0;">
         <div class="field-group" style="margin-bottom:0;">
           <label>Custo / hora Mão de Obra (R$)</label>
           <input type="number" id="custoHora" value="0" step="1" min="0">
           <div style="font-size:12px;color:var(--sub);margin-top:3px;">Quanto você quer ganhar por hora trabalhada. Usado no setup e pós-processamento.</div>
+        </div>
+        <div class="field-group" style="margin-bottom:0;">
+          <label>Imposto sobre Venda (%)</label>
+          <input type="number" id="impostoVenda" value="0" step="0.5" min="0" max="30">
+          <div style="font-size:12px;color:var(--sub);margin-top:3px;">Simples Nacional. Se você é MEI (DAS fixo), deixe 0 e lance o DAS nos custos fixos.</div>
         </div>
         <div class="field-group" style="margin-bottom:0;">
           <label>Percentual de Falhas de Impressão (%)</label>
@@ -1739,6 +1524,11 @@ label          { font-size: 12px; letter-spacing: .3px; margin-bottom: 6px; }
           <div class="result-card" id="r-mesa-card" style="display:none;background:rgba(255,106,0,.05);border-color:rgba(255,106,0,.2);">
             <div class="result-label" style="color:var(--neon);">🍽️ Impressão em Lote — <span id="r-mesa-qtd">—</span></div>
             <div style="font-size:12.5px;color:var(--sub);margin-top:4px;">Custo total da mesa: <strong id="r-mesa-custo" style="color:var(--text);">—</strong></div>
+          </div>
+          <div class="result-card" id="r-imposto-card" style="display:none;"><div class="result-label">Imposto sobre Venda</div><div class="result-value v-amber" id="r-imposto">—</div></div>
+          <div class="result-card" id="r-inviavel-card" style="display:none;background:rgba(255,61,0,.08);border-color:rgba(255,61,0,.3);">
+            <div class="result-label" style="color:var(--red);">⚠ Custo fixo alto demais</div>
+            <div style="font-size:12.5px;color:var(--sub);margin-top:5px;line-height:1.6;">Fixo + imposto consomem quase todo o preço. Aumente o faturamento estimado ou reduza os custos fixos — os preços abaixo estão no limite de segurança.</div>
           </div>
           <div class="result-card" id="r-suporte-card" style="display:none;"><div class="result-label">Custo Suporte/Desperdício</div><div class="result-value v-amber" id="r-custo-suporte">—</div></div>
           <div class="result-card" id="r-maquina-card" style="display:none;"><div class="result-label">Desgaste de Máquina + Setup</div><div class="result-value v-amber" id="r-custo-maquina">—</div></div>
@@ -2080,78 +1870,6 @@ label          { font-size: 12px; letter-spacing: .3px; margin-bottom: 6px; }
 <div class="fab-tooltip">Suporte</div>
 
 <script>
-// ─── LICENÇA ─────────────────────────────────────────
-// Sistema de geração e validação de chaves offline
-// Chave formato: P3D0-XXXX-XXXX-XXXX (baseada em hash)
-
-const LICENSE_SALT = 'PRECIFICA3D2025';
-
-function gerarHash(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = ((hash << 5) - hash) + str.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash).toString(36).toUpperCase().padStart(4, '0').slice(0, 4);
-}
-
-function gerarChave(seed) {
-  const s = (LICENSE_SALT + seed.toUpperCase()).split('').reverse().join('');
-  const p1 = 'P3D0';
-  const p2 = gerarHash(s + 'A');
-  const p3 = gerarHash(s + 'B');
-  const p4 = gerarHash(s + 'C');
-  return `${p1}-${p2}-${p3}-${p4}`;
-}
-
-function validarChave(chave) {
-  const partes = chave.toUpperCase().replace(/[^A-Z0-9-]/g,'').split('-');
-  if (partes.length !== 4 || partes[0] !== 'P3D0') return false;
-  // Tenta validar contra todas as seeds possíveis (de 1 a 9999)
-  // Na prática você gera via painel e a chave é única por seed
-  for (let i = 1; i <= 9999; i++) {
-    if (gerarChave(String(i)) === chave.toUpperCase()) return true;
-  }
-  return false;
-}
-
-function formatLicenseInput(el) {
-  let val = el.value.replace(/[^A-Z0-9a-z]/gi, '').toUpperCase().slice(0, 16);
-  let fmt = '';
-  for (let i = 0; i < val.length; i++) {
-    if (i > 0 && i % 4 === 0) fmt += '-';
-    fmt += val[i];
-  }
-  el.value = fmt;
-  document.getElementById('license-error').textContent = '';
-}
-
-function ativarLicenca() {
-  const chave = document.getElementById('license-input').value.trim().toUpperCase();
-  const errEl = document.getElementById('license-error');
-  if (chave.length < 19) { errEl.textContent = 'Chave incompleta. Verifique e tente novamente.'; return; }
-  if (validarChave(chave)) {
-    localStorage.setItem('p3d_license', chave);
-    document.getElementById('license-screen').style.display = 'none';
-    iniciarApp();
-  } else {
-    errEl.textContent = '❌ Chave inválida. Entre em contato com o vendedor.';
-    document.getElementById('license-input').style.borderColor = 'var(--red)';
-    setTimeout(() => {
-      document.getElementById('license-input').style.borderColor = '';
-    }, 1500);
-  }
-}
-
-function verificarLicenca() {
-  const salva = localStorage.getItem('p3d_license');
-  if (salva && validarChave(salva)) {
-    document.getElementById('license-screen').style.display = 'none';
-    iniciarApp();
-  }
-  // senão mantém a tela de licença visível
-}
-
 function iniciarApp() {
   calc();
   calcConfig();
@@ -2169,7 +1887,7 @@ const paintTintaDef = {simples:2,media:4,complexa:6};
 let vendas = JSON.parse(localStorage.getItem('p3d_vendas') || '[]');
 let produtos = JSON.parse(localStorage.getItem('p3d_produtos') || '[]');
 const saveProdutos = () => localStorage.setItem('p3d_produtos', JSON.stringify(produtos));
-const CONFIG_FIELDS = ['maquina','software','ecommerce','mei','publicidade','outrosfixo','faturamento','equip1','equip2','vidaUtil','potencia','kwh','kgFilamento','taxaShopee','taxaShopeeR','taxaML','taxaMLR','shopeeFreteGratis','shopeeCupom','shopeeDevol','perdaCarretel','custoMaquinaH','tempoSetupM','metaLucroHora','horasDia','primerVal','primerQtd','vernizVal','vernizQtd','custoHora','falhas'];
+const CONFIG_FIELDS = ['maquina','software','ecommerce','mei','publicidade','outrosfixo','faturamento','equip1','equip2','vidaUtil','potencia','kwh','kgFilamento','taxaShopee','taxaShopeeR','taxaML','taxaMLR','shopeeFreteGratis','shopeeCupom','shopeeDevol','perdaCarretel','custoMaquinaH','tempoSetupM','metaLucroHora','horasDia','impostoVenda','shopeeAds','primerVal','primerQtd','vernizVal','vernizQtd','custoHora','falhas'];
 
 // ─── UTILS ───────────────────────────────────────────
 const fmt  = n => 'R$ ' + n.toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.');
@@ -2294,20 +2012,20 @@ const SIM_MARKUPS = [1.8, 2, 2.5, 3, 3.5, 4];
 
 function precosDoMarkup(mk) {
   const c = window._ctx; if (!c) return null;
-  const baseProd = c.totalProd * mk;
-  const base     = aplicarArredondamento(baseProd + c.embal + c.frete);
-  const pShopRaw = (base + c.fg + c.txSR) / (1 - c.txS);
-  const pShopCup = c.cup > 0 ? pShopRaw / (1 - c.cup) : pShopRaw;
-  const pShop    = aplicarArredondamento(pShopCup + (c.devol > 0 ? c.totalProd * c.devol : 0));
-  const pML      = aplicarArredondamento((base + c.txMR) / (1 - c.txM));
-  return { base, pShop, pML, lucro: base - c.total };
+  const baseProd  = c.custoVar * mk / c.denomSafe;
+  const totalProd = c.custoVar + baseProd * c.fixoD + baseProd * c.impD;
+  const total     = totalProd + c.embal + c.frete;
+  const base      = aplicarArredondamento(baseProd + c.embal + c.frete);
+  const pShop     = aplicarArredondamento((base + c.fg + c.txSR) / (1 - c.dedShop) + total * c.devol);
+  const pML       = aplicarArredondamento((base + c.txMR) / (1 - Math.min(c.txM, 0.90)));
+  return { base, pShop, pML, lucro: base - total };
 }
 
 function renderSimulador() {
   const tb = document.getElementById('sim-body');
   const c  = window._ctx;
   if (!tb) return;
-  if (!c || c.totalProd <= 0) {
+  if (!c || c.custoVar <= 0) {
     tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--hint);font-weight:400;padding:12px;">Preencha os dados do produto.</td></tr>';
     return;
   }
@@ -2329,9 +2047,11 @@ function renderSimulador() {
 // ─── PREÇO-ALVO REVERSO ───────────────────────────────────
 function resultadoReverso(base) {
   const c = window._ctx;
-  const lucro    = base - c.total;
   const baseProd = base - c.embal - c.frete;
-  const mk       = c.totalProd > 0 ? baseProd / c.totalProd : 0;
+  // fixo e imposto acompanham o preço praticado
+  const total    = c.custoVar + baseProd * c.fixoD + baseProd * c.impD + c.embal + c.frete;
+  const lucro    = base - total;
+  const mk       = c.custoVar > 0 ? (baseProd * c.denomSafe) / c.custoVar : 0;
   const margem   = base > 0 ? (lucro / base) * 100 : 0;
   const cor      = lucro >= 0 ? 'var(--green)' : 'var(--red)';
   return `Lucro: <strong style="color:${cor};">${fmt(lucro)}</strong><br>`
@@ -2343,7 +2063,7 @@ function calcReverso() {
   const c = window._ctx;
   const campos = [
     ['rev-cliente', 'rev-cliente-res', p => p],
-    ['rev-shopee',  'rev-shopee-res',  p => (p - (c.devol > 0 ? c.totalProd * c.devol : 0)) * (1 - c.cup) * (1 - c.txS) - c.txSR - c.fg],
+    ['rev-shopee',  'rev-shopee-res',  p => (p - c.total * c.devol) * (1 - c.dedShop) - c.txSR - c.fg],
     ['rev-ml',      'rev-ml-res',      p => p * (1 - c.txM) - c.txMR]
   ];
   campos.forEach(([inId, outId, paraBase]) => {
@@ -2351,7 +2071,7 @@ function calcReverso() {
     const out = document.getElementById(outId);
     if (!inp || !out) return;
     const preco = parseBR(inp.value);
-    if (!c || c.totalProd <= 0) { out.innerHTML = 'Preencha o produto primeiro.'; return; }
+    if (!c || c.custoVar <= 0) { out.innerHTML = 'Preencha o produto primeiro.'; return; }
     if (preco <= 0) { out.innerHTML = '—'; return; }
     out.innerHTML = resultadoReverso(paraBase(preco));
   });
@@ -2381,7 +2101,7 @@ function renderViabilidade() {
   const alerts = document.getElementById('viab-alerts');
 
   // Sem dados suficientes
-  if (!c || c.totalProd <= 0 || c.horasMaqPeca <= 0) {
+  if (!c || c.custoVar <= 0 || c.horasMaqPeca <= 0) {
     card.className = 'viab n-vazio';
     setTxt('viab-emoji', '⏳');
     setTxt('viab-nome', 'Aguardando dados');
@@ -2435,10 +2155,12 @@ function renderViabilidade() {
 
 function calc() {
   const fixo  = v('maquina')+v('software')+v('ecommerce')+v('mei')+v('publicidade')+v('outrosfixo');
-  const fat   = v('faturamento')||1;
+  const fat   = v('faturamento');
   const amort = (v('equip1')+v('equip2'))/(v('vidaUtil')||1);
   const fixoT = fixo+amort;
-  const fixoD = fixoT/fat;
+  // Fixo dissolvido só existe se houver faturamento estimado
+  const fixoD = fat > 0 ? fixoT/fat : 0;
+  const impD  = (v('impostoVenda')||0)/100;
 
   // ── QUANTIDADE POR MESA ──
   const qtd = Math.max(1, v('qtdMesa') || 1);
@@ -2478,7 +2200,6 @@ function calc() {
 
   // Custo de PRODUÇÃO por peça
   const producao = fil + filSupporte + enrg + maquina + moSetup + moPosProcH + adic;
-  const indir    = producao * fixoD;
 
   let pintura = 0;
   if(paintMode!=='none'){
@@ -2487,28 +2208,37 @@ function calc() {
     pintura = v('tinta')+pC+vC+paintHours[paintMode]*v('custoHora');
   }
 
-  // Total de produção (com falhas e indireto)
-  const totalProd = (producao + indir + pintura) * (1 + v('falhas')/100);
-  // Custo total real = produção + embalagem + frete
-  const total = totalProd + embal + frete;
+  // CUSTO VARIÁVEL por peça (com falhas aplicadas)
+  const custoVar = (producao + pintura) * (1 + v('falhas')/100);
 
-  // Markup/Margem aplicado APENAS sobre o custo de produção
-  // Embalagem e frete entram no preço final pelo valor real (repasse)
-  const baseProd = totalProd === 0 ? 0 : precMode === 'markup'
-    ? totalProd * v('markup')
-    : totalProd / (1 - Math.min(v('margem'), 99) / 100);
-  const base = aplicarArredondamento(baseProd + embal + frete);
+  // Método do divisor: fixo e imposto saem de uma FATIA DO PREÇO, não do custo
+  const denomBase  = 1 - fixoD - impD;
+  const denomSafe  = Math.max(denomBase, 0.10);
+  const inviavel   = denomBase < 0.10;
+
+  let baseProd;
+  if (custoVar === 0) baseProd = 0;
+  else if (precMode === 'markup') baseProd = custoVar * v('markup') / denomSafe;
+  else {
+    const mg = Math.min(v('margem'), 95) / 100;
+    baseProd = custoVar / Math.max(denomBase - mg, 0.05);
+  }
+
+  const indir     = baseProd * fixoD;   // fixo dissolvido, proporcional ao preço
+  const imposto   = baseProd * impD;    // imposto sobre venda
+  const totalProd = custoVar + indir + imposto;
+  const total     = totalProd + embal + frete;
+  const base      = aplicarArredondamento(baseProd + embal + frete);
 
   const txS    = v('taxaShopee')/100, txSR = v('taxaShopeeR');
   const txM    = v('taxaML')/100,     txMR = v('taxaMLR');
+  const adsPct = (v('shopeeAds')||0)/100;
 
-  // Shopee: taxa + fixo + frete grátis absorvido + cupom + devolução
-  const baseShopeeComExtras = base + shopeeFreteGratis;
-  const pShopBase     = base === 0 ? 0 : (baseShopeeComExtras + txSR) / (1 - txS);
-  const pShopComCupom = shopeeCupomPct > 0 ? pShopBase / (1 - shopeeCupomPct) : pShopBase;
-  const custoDevol    = shopeeDevol > 0 ? totalProd * shopeeDevol : 0;
-  const pShop  = base === 0 ? 0 : aplicarArredondamento(pShopComCupom + custoDevol);
-  const pML    = base === 0 ? 0 : aplicarArredondamento((base+txMR)/(1-txM));
+  // Shopee: todas as deduções percentuais somadas em um único divisor
+  const dedShop    = Math.min(txS + shopeeCupomPct + adsPct, 0.90);
+  const custoDevol = shopeeDevol > 0 ? total * shopeeDevol : 0;
+  const pShop = base === 0 ? 0 : aplicarArredondamento((base + shopeeFreteGratis + txSR) / (1 - dedShop) + custoDevol);
+  const pML   = base === 0 ? 0 : aplicarArredondamento((base + txMR) / (1 - Math.min(txM, 0.90)));
 
   set('r-custoDireto',      fmt(producao));
   // Card de mesa múltipla
@@ -2555,16 +2285,22 @@ function calc() {
   } else {
     adicCard.style.display = 'none';
   }
-  document.getElementById('loss-warning').style.display =
-    (pShop<total||pML<total)?'block':'none';
+  // Prejuízo = o que você RECEBE é menor que o custo real
+  document.getElementById('loss-warning').style.display = (base > 0 && base < total) ? 'block' : 'none';
+  const impCard = document.getElementById('r-imposto-card');
+  if (impCard) impCard.style.display = imposto > 0 ? 'block' : 'none';
+  set('r-imposto', fmt(imposto));
+  const invCard = document.getElementById('r-inviavel-card');
+  if (invCard) invCard.style.display = inviavel ? 'block' : 'none';
   calcConfig();
 
   // Guardar para aba vendas
   window._lastCalc = { produto: tx('nomeProduto')||'Produto', custo: total, precoCliente: base, precoShopee: pShop, precoML: pML, totalProd, embal, frete, horasMaq: (tempoMesa + setupMesa) / qtd };
 
   // Contexto para simulador e preço reverso
-  window._ctx = { totalProd, total, embal, frete, txS, txSR, txM, txMR,
-                  fg: shopeeFreteGratis, cup: shopeeCupomPct, devol: shopeeDevol,
+  window._ctx = { custoVar, denomBase, denomSafe, fixoD, impD, totalProd, total,
+                  embal, frete, txS, txSR, txM, txMR, dedShop,
+                  fg: shopeeFreteGratis, devol: shopeeDevol,
                   horasMaqPeca: (tempoMesa + setupMesa) / qtd, base, qtd };
   renderSimulador();
   calcReverso();
@@ -3463,7 +3199,6 @@ function toggleCollapse(id) {
 
 // ─── INIT ─────────────────────────────────────────────
 document.querySelectorAll('input[type=number],input[type=text]').forEach(el => {
-  if (el.id === 'license-input') return; // não interfere na tela de licença
   el.addEventListener('input', () => { calc(); calcConfig(); });
 });
 
@@ -3483,8 +3218,8 @@ CONFIG_FIELDS.forEach(id => {
     localStorage.setItem('p3d_cfg_' + id, document.getElementById(id).value));
 });
 
-// Verificar licença ao carregar
-verificarLicenca();
+// Iniciar aplicativo
+iniciarApp();
 // Inicializar tema
 initTheme();
 // Atualizar meta
