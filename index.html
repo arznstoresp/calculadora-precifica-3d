@@ -1201,7 +1201,11 @@ label          { font-size: 12px; letter-spacing: .3px; margin-bottom: 6px; }
         <div class="field-group"><label>Publicidade Mínima (R$)</label><input type="number" id="publicidade" value="0" step="0.01" min="0"></div>
         <div class="field-group"><label>Outros Fixos (R$)</label><input type="number" id="outrosfixo" value="0" step="0.01" min="0"></div>
         <hr class="divider">
-        <div class="field-group"><label>Faturamento Previsto / Mês (R$)</label><input type="number" id="faturamento" value="0" step="10" min="1"></div>
+        <div class="field-group">
+          <label>Faturamento Previsto / Mês (R$)</label>
+          <input type="text" id="faturamento" value="0" inputmode="decimal" placeholder="Ex: 3000" oninput="calc()">
+          <div style="font-size:12px;color:var(--sub);margin-top:4px;" id="faturamento-eco">Quanto você espera faturar no mês. É o que dilui o custo fixo.</div>
+        </div>
         <div class="result-card">
           <div class="result-label">Total Fixo + Amortização</div>
           <div class="result-value v-amber" id="c-custoFixo">—</div>
@@ -1893,6 +1897,28 @@ const CONFIG_FIELDS = ['maquina','software','ecommerce','mei','publicidade','out
 const fmt  = n => 'R$ ' + n.toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.');
 const fmtK = n => n >= 1000 ? 'R$ ' + (n/1000).toFixed(1).replace('.',',') + 'k' : fmt(n);
 const v    = id => parseFloat(document.getElementById(id).value) || 0;
+
+// Lê dinheiro no jeito brasileiro: aceita 1000, 1.000, 1,000, 1.234,56 e R$ 1.234,56
+function parseMoedaBR(txt) {
+  let s = String(txt || '').replace(/[R$\s]/g, '');
+  if (!s) return 0;
+  const temPonto = s.includes('.'), temVirg = s.includes(',');
+  if (temPonto && temVirg) {
+    // o último separador manda: 1.234,56 → 1234.56 | 1,234.56 → 1234.56
+    s = s.lastIndexOf(',') > s.lastIndexOf('.')
+      ? s.replace(/\./g, '').replace(',', '.')
+      : s.replace(/,/g, '');
+  } else if (temPonto || temVirg) {
+    const sep = temVirg ? ',' : '.';
+    const partes = s.split(sep);
+    // "1,000" / "1.000" com 3 dígitos no fim e um só separador = milhar
+    s = (partes.length === 2 && partes[1].length === 3 && partes[0] !== '')
+      ? partes.join('')
+      : s.replace(sep, '.');
+  }
+  return parseFloat(s) || 0;
+}
+const vMoeda = id => parseMoedaBR(document.getElementById(id).value);
 const tx   = id => document.getElementById(id).value.trim();
 const set  = (id,val) => { const el=document.getElementById(id); if(el) el.textContent=val; };
 const saveVendas = () => localStorage.setItem('p3d_vendas', JSON.stringify(vendas));
@@ -2111,6 +2137,19 @@ function renderViabilidade() {
     return;
   }
 
+  // Configuração inviável: o veredito seria sobre o config, não sobre o produto
+  if (c.inviavel) {
+    card.className = 'viab n-ruim';
+    setTxt('viab-emoji', '⚙️');
+    setTxt('viab-nome', 'Configuração inválida');
+    setTxt('viab-desc', c.fat > 0
+      ? 'O custo fixo consome quase todo o preço. Revise o faturamento previsto nas Configurações — os números abaixo não valem enquanto isso.'
+      : 'Informe o faturamento previsto do mês nas Configurações para o app distribuir o custo fixo.');
+    ['viab-hero','viab-tempo','viab-margem','viab-capac','viab-mes'].forEach(i => setTxt(i, '—'));
+    if (alerts) alerts.innerHTML = `<div class="viab-alert crit">⚙️ <strong>Fixo dissolvido em ${(c.fixoD*100).toFixed(0)}% do preço.</strong> Acima de 90% o app trava num limite de segurança e os preços deixam de fazer sentido. Ajuste o faturamento previsto ou reduza os custos fixos.</div>`;
+    return;
+  }
+
   const meta      = v('metaLucroHora') || 10;
   const horasDia  = Math.min(v('horasDia') || 12, 24);
   const lucro     = c.base - c.total;
@@ -2155,7 +2194,7 @@ function renderViabilidade() {
 
 function calc() {
   const fixo  = v('maquina')+v('software')+v('ecommerce')+v('mei')+v('publicidade')+v('outrosfixo');
-  const fat   = v('faturamento');
+  const fat   = vMoeda('faturamento');
   const amort = (v('equip1')+v('equip2'))/(v('vidaUtil')||1);
   const fixoT = fixo+amort;
   // Fixo dissolvido só existe se houver faturamento estimado
@@ -2292,6 +2331,18 @@ function calc() {
   set('r-imposto', fmt(imposto));
   const invCard = document.getElementById('r-inviavel-card');
   if (invCard) invCard.style.display = inviavel ? 'block' : 'none';
+
+  // Eco do faturamento — mostra o que o app entendeu
+  const eco = document.getElementById('faturamento-eco');
+  if (eco) {
+    if (fat > 0) {
+      const alto = fixoT / fat > 0.80;
+      eco.innerHTML = `Entendido: <strong style="color:${alto ? 'var(--red)' : 'var(--text)'}">${fmt(fat)}</strong> por mês`
+        + (alto ? ` — o fixo consome ${(fixoT/fat*100).toFixed(0)}% disso. Confira se o valor está certo.` : '');
+    } else {
+      eco.textContent = 'Quanto você espera faturar no mês. É o que dilui o custo fixo.';
+    }
+  }
   calcConfig();
 
   // Guardar para aba vendas
@@ -2301,7 +2352,7 @@ function calc() {
   window._ctx = { custoVar, denomBase, denomSafe, fixoD, impD, totalProd, total,
                   embal, frete, txS, txSR, txM, txMR, dedShop,
                   fg: shopeeFreteGratis, devol: shopeeDevol,
-                  horasMaqPeca: (tempoMesa + setupMesa) / qtd, base, qtd };
+                  horasMaqPeca: (tempoMesa + setupMesa) / qtd, base, qtd, inviavel, fixoD, fat };
   renderSimulador();
   calcReverso();
   renderViabilidade();
